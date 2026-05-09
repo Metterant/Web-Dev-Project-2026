@@ -17,11 +17,11 @@
   "license": "ISC",
   "author": "Metterant",
   "type": "commonjs",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
-    "dev": "nodemon server"
+    "start": "node src/server",
+    "dev": "nodemon src/server"
   },
   "dependencies": {
     "express": "^5.2.1"
