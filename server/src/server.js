@@ -3,7 +3,7 @@ const app = express();
 const port = 8080;
 
 // Define a route for GET requests to the root URL
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     res.send("Hello World from Express!");
 });
 
