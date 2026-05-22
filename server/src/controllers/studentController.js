@@ -6,10 +6,10 @@ const serverMessages = {
 
 const getStudentProfile = async (req, res) => {
   try {
-    const userId = req.params.id; // Get the ID from the URL (e.g., /5)
+    const studentId = req.params.id; // Get the ID from the URL (e.g., /5)
     
     // Call the Model to get the data
-    const student = await Student.findById(userId);
+    const student = await Student.findById(studentId);
 
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
@@ -59,8 +59,28 @@ const searchStudents = async (req, res) => {
   }
 };
 
+const deleteStudentRecord = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    
+    const result = await Student.deleteById(studentId);
+
+    if (!result) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    if (result.affectedRows == 1) 
+      res.status(200).json({ message: 'Student Record deleted' });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(serverMessages[500]);
+  }
+};
+
 module.exports = { 
   getStudentProfile, 
   getAllStudents,
-  searchStudents
+  searchStudents,
+  deleteStudentRecord
 };
