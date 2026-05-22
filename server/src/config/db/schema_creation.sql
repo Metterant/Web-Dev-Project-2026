@@ -17,14 +17,16 @@ CREATE TABLE student (
     major VARCHAR(100) NOT NULL,
     admission_year YEAR NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL
+    password_hash VARCHAR(255) NOT NULL,
+    status VARCHAR(20) DEFAULT 'active' NOT NULL
 );
 
 -- Create department table (head_instructor_id foreign key added later)
 CREATE TABLE department (
     department_id INT PRIMARY KEY AUTO_INCREMENT,
     department_name VARCHAR(100) NOT NULL,
-    head_instructor_id INT UNIQUE
+    head_instructor_id INT UNIQUE,
+    status VARCHAR(20) DEFAULT 'active' NOT NULL
 );
 
 CREATE TABLE instructor (
@@ -35,6 +37,7 @@ CREATE TABLE instructor (
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     department_id INT,
+    status VARCHAR(20) DEFAULT 'active' NOT NULL,
     FOREIGN KEY (department_id) REFERENCES department(department_id)
 );
 
@@ -50,6 +53,7 @@ CREATE TABLE course (
     credits INT NOT NULL,
     department_id INT,
     instructor_id INT,
+    status VARCHAR(20) DEFAULT 'active' NOT NULL,
     FOREIGN KEY (department_id) REFERENCES department(department_id),
     FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id)
 );
@@ -60,6 +64,7 @@ CREATE TABLE enrollment (
     course_id INT,
     semester VARCHAR(20) NOT NULL, -- e.g., 'Fall 2026'
     grade VARCHAR(5),
+    status VARCHAR(20) DEFAULT 'active' NOT NULL,
     FOREIGN KEY (student_id) REFERENCES student(student_id),
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
