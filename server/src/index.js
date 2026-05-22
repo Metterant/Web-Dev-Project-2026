@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 5000;
 
+const studentRoutes = require('#routes/studentRoutes');
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -11,8 +13,11 @@ app.use((req, res, next) => {
 
 // Define a route for GET requests to the root URL
 app.get("/api", (req, res) => {
-    res.json({ tests: ["one", "two", "three"] })
+    res.send('Request to /api/students/ to get students')
 });
+
+// Define a route for requests to /students
+app.use("/api/students", studentRoutes)
 
 // Start the server
 app.listen(port, () => {
