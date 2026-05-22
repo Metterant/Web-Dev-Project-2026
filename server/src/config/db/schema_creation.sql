@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS college_database;
 CREATE DATABASE college_database;
 USE college_database;
 
@@ -9,6 +10,7 @@ CREATE TABLE system_admin (
 
 CREATE TABLE student (
     student_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_code VARCHAR(10) NOT NULL UNIQUE,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -24,6 +26,7 @@ CREATE TABLE department (
 
 CREATE TABLE instructor (
     instructor_id INT PRIMARY KEY AUTO_INCREMENT,
+    instructor_code VARCHAR(10) NOT NULL UNIQUE,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -39,6 +42,7 @@ FOREIGN KEY (head_instructor_id) REFERENCES instructor(instructor_id);
 
 CREATE TABLE course (
     course_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_code VARCHAR(10) NOT NULL UNIQUE,
     course_name VARCHAR(100) NOT NULL,
     credits INT NOT NULL,
     department_id INT,

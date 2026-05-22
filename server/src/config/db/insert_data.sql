@@ -5,10 +5,10 @@ INSERT INTO system_admin (username, password_hash)
 VALUES ('admin_root', 'hashed_password_123');
 
 -- 2. Insert Students
-INSERT INTO student (first_name, last_name, email, password_hash) VALUES
-('Alice', 'Smith', 'alice.s@college.edu', 'hash1'),
-('Bob', 'Jones', 'bob.j@college.edu', 'hash2'),
-('Charlie', 'Brown', 'charlie.b@college.edu', 'hash3');
+INSERT INTO student (student_code, first_name, last_name, email, password_hash) VALUES
+('S001', 'Alice', 'Smith', 'alice.s@college.edu', 'hash1'),
+('S002', 'Bob', 'Jones', 'bob.j@college.edu', 'hash2'),
+('S003', 'Charlie', 'Brown', 'charlie.b@college.edu', 'hash3');
 
 -- 3. Insert Departments (Leave head_instructor_id NULL for now)
 INSERT INTO department (department_name) VALUES
@@ -16,20 +16,20 @@ INSERT INTO department (department_name) VALUES
 ('Mathematics');
 
 -- 4. Insert Instructors and assign them to Departments
-INSERT INTO instructor (first_name, last_name, email, password_hash, department_id) VALUES
-('Alan', 'Turing', 'aturing@college.edu', 'hash4', 1),    -- CS (ID 1)
-('Grace', 'Hopper', 'ghopper@college.edu', 'hash5', 1),   -- CS (ID 1)
-('Isaac', 'Newton', 'inewton@college.edu', 'hash6', 2);   -- Math (ID 2)
+INSERT INTO instructor (instructor_code, first_name, last_name, email, password_hash, department_id) VALUES
+('F001', 'Alan', 'Turing', 'aturing@college.edu', 'hash4', 1),    -- CS (ID 1)
+('F002', 'Grace', 'Hopper', 'ghopper@college.edu', 'hash5', 1),   -- CS (ID 1)
+('F003', 'Isaac', 'Newton', 'inewton@college.edu', 'hash6', 2);   -- Math (ID 2)
 
 -- 5. Update Departments to assign Department Heads
 UPDATE department SET head_instructor_id = 1 WHERE department_id = 1; -- Alan Turing heads CS
 UPDATE department SET head_instructor_id = 3 WHERE department_id = 2; -- Isaac Newton heads Math
 
 -- 6. Insert Courses and assign to Departments and Instructors
-INSERT INTO course (course_name, credits, department_id, instructor_id) VALUES
-('Intro to Programming', 3, 1, 2),  -- Taught by Grace Hopper
-('Data Structures', 4, 1, 1),       -- Taught by Alan Turing
-('Calculus I', 4, 2, 3);            -- Taught by Isaac Newton
+INSERT INTO course (course_code, course_name, credits, department_id, instructor_id) VALUES
+('CSIP01', 'Intro to Programming', 3, 1, 2),  -- Taught by Grace Hopper
+('CSDS01', 'Data Structures', 4, 1, 1),       -- Taught by Alan Turing
+('MACA01', 'Calculus I', 4, 2, 3);            -- Taught by Isaac Newton
 
 -- 7. Insert Enrollments (Now includes Semester)
 INSERT INTO enrollment (student_id, course_id, semester, grade) VALUES
