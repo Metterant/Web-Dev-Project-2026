@@ -43,16 +43,14 @@ const getAllStudents = async (req, res) => {
 
 const searchStudents = async (req, res) => {
   try {
-      const keyword = req.query.keyword;
-      const page = req.query.page;
+    const keyword = req.query.keyword;
+    const page = req.query.page;
+    const sort = req.query.sort;
+    const order = req.query.order;
 
-      if (!keyword) {
-        return res.status(400).json({ message: 'Missing search keyword' });
-      }
-
-      const results = await Student.search(keyword, page);
-      return res.status(200).json(results);
-
+    const results = await Student.search(keyword, page, sort, order);
+    return res.status(200).json(results);
+  
   } catch (error) {
     console.error(error);
       res.status(500).json(serverMessages[500]);
