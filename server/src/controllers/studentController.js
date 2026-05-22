@@ -4,7 +4,7 @@ const serverMessages = {
   500: { message: 'Server Error' }
 };
 
-const getStudentProfile = async (req, res) => {
+const getStudentRecord = async (req, res) => {
   try {
     const studentId = req.params.id; // Get the ID from the URL (e.g., /5)
     
@@ -77,7 +77,7 @@ const deleteStudentRecord = async (req, res) => {
 };
 
 module.exports = { 
-  getStudentProfile, 
+  getStudentProfile: getStudentRecord, 
   getAllStudents,
   searchStudents,
   deleteStudentRecord
