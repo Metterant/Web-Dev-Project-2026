@@ -55,7 +55,32 @@ const Student = {
             [id]
         );
         return result;
-    }
+    },
+    // Create a student
+    create: async (student_code, first_name, last_name, dob, major, admission_year = new Date().getFullYear(), email) => {
+        const [result] = await db.query(
+            `INSERT INTO student (student_code, first_name, last_name, dob, major, admission_year, email) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [student_code, first_name, last_name, dob, major, admission_year, email]
+        );
+        return result;
+    },
+    // Update a student
+    update: async (id, student_code, first_name, last_name, dob, major, admission_year = new Date().getFullYear(), email) => {
+        const [result] = await db.query(
+            `UPDATE student SET 
+                student_code = ?,
+                first_name = ?,
+                last_name = ?,
+                dob = ?,
+                major = ?,
+                admission_year = ?,
+                email = ?
+            WHERE student_id = ?`,
+            [student_code, first_name, last_name, dob, major, admission_year, email, id]
+        );
+        return result;
+    },
 };
 
 module.exports = Student;
