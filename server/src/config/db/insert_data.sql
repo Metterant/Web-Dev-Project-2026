@@ -5,10 +5,10 @@ INSERT INTO system_admin (username, password_hash)
 VALUES ('admin_root', 'hashed_password_123');
 
 -- 2. Insert Students
-INSERT INTO student (student_code, first_name, last_name, dob, major, admission_year, email, password_hash, status) VALUES
-('S001', 'Alice', 'Smith', '2006-04-12', 'Computer Science', 2024, 'alice.s@college.edu', 'hash1', 'active'),
-('S002', 'Bob', 'Jones', '2005-09-03', 'Mathematics', 2023, 'bob.j@college.edu', 'hash2', 'active'),
-('S003', 'Charlie', 'Brown', '2007-01-25', 'Information Technology', 2025, 'charlie.b@college.edu', 'hash3', 'active');
+INSERT INTO student (student_code, first_name, last_name, dob, major, admission_year, email, status) VALUES
+('S001', 'Alice', 'Smith', '2006-04-12', 'Computer Science', 2024, 'alice.s@college.edu', 'active'),
+('S002', 'Bob', 'Jones', '2005-09-03', 'Mathematics', 2023, 'bob.j@college.edu', 'active'),
+('S003', 'Charlie', 'Brown', '2007-01-25', 'Information Technology', 2025, 'charlie.b@college.edu', 'active');
 
 -- 3. Insert Departments (Leave head_instructor_id NULL for now)
 INSERT INTO department (department_name, status) VALUES
