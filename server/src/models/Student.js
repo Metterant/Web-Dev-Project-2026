@@ -21,7 +21,7 @@ const Student = {
     // Find a student by their code
     findByCode: async (student_code) => {
         const [rows] = await db.query(
-            `SELECT student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email 
+            `SELECT student_id, student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email 
             FROM student WHERE student_code = ? AND status = 'active'`,
             [student_code]);
         return rows[0];

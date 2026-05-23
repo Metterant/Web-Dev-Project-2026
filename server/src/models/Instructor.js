@@ -21,7 +21,7 @@ const Instructor = {
     // Find a instructor by their code
     findByCode: async (instructor_code) => {
         const [rows] = await db.query(
-            `SELECT instructor_code, first_name, last_name, email, department_id 
+            `SELECT instructor_id, instructor_code, first_name, last_name, email, department_id 
             FROM instructor WHERE instructor_code = ? AND status = 'active'`,
             [instructor_code]);
         return rows[0];
