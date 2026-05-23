@@ -9,9 +9,15 @@ router.get('/search', controller.searchStudents)
 router.get('/delete/:id', controller.deleteStudentRecord)
 
 // GET requests hit /:id
-router.get('/:id', controller.getStudentProfile);
+router.get('/:id', controller.getStudentRecord);
 
 // GET requests hit / (root)
 router.get('/', controller.getAllStudents);
+
+// POST requests hit / (root)
+router.post('/', controller.createStudent)
+
+// PUT requests hit /:id
+router.put('/:id', controller.updateStudent);
 
 module.exports = router;
