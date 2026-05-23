@@ -12,6 +12,9 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Define a route for GET requests to the root URL
 app.get("/api", (req, res) => {
     res.send('Request to /api/students/ to get students or /api/instructors to get instructors')
