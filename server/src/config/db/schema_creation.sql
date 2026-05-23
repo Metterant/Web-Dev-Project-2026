@@ -35,7 +35,7 @@ CREATE TABLE instructor (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL DEFAULT 'unset',
     department_id INT,
     status VARCHAR(20) DEFAULT 'active' NOT NULL,
     FOREIGN KEY (department_id) REFERENCES department(department_id)
