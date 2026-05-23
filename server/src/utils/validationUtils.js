@@ -34,14 +34,14 @@ function isValidStudentCode(codeString) {
 }
 
 function isValidInstructorCode(codeString) {
-  const regex = /^F[A-Z]*[0-9]{3,}$/; // Must start with 'F' followed by one or more characters and then at least 3 digits
+  const regex = /^I[A-Z]*[0-9]{3,}$/; // Must start with 'F' followed by one or more characters and then at least 3 digits
   return regex.test(codeString);
 }
 
 function isValidCourseCode(codeString) {
   if (!codeString) return false;
   
-  const regex = /^C[A-Z]*[0-9]{3,}$/; // Must start with 'C' followed by one or more characters and then at least 3 digits
+  const regex = /^[A-Z]+[0-9]+$/;
   return regex.test(codeString);
 }
 
