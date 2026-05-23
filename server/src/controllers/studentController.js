@@ -18,11 +18,11 @@ const getStudentRecord = async (req, res) => {
     }
 
     // Send the data back as JSON
-    res.status(200).json(student);
+    return res.status(200).json(student);
 
   } catch (error) {
     console.error(error);
-    res.status(500).json(serverMessages[500]);
+    return res.status(500).json(serverMessages[500]);
   }
 };
 
@@ -35,11 +35,11 @@ const getAllStudents = async (req, res) => {
     }
 
     // Send the data back as JSON
-    res.status(200).json(students);
+    return  res.status(200).json(students);
 
   } catch (error) {
     console.error(error);
-    res.status(500).json(serverMessages[500]);
+    return res.status(500).json(serverMessages[500]);
   }
 };
 
@@ -55,7 +55,7 @@ const searchStudents = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.status(500).json(serverMessages[500]);
+    return res.status(500).json(serverMessages[500]);
   }
 };
 
@@ -70,11 +70,11 @@ const deleteStudentRecord = async (req, res) => {
     }
 
     if (result.affectedRows == 1)
-      res.status(200).json({ message: 'Student Record deleted' });
+      return res.status(200).json({ message: 'Student Record deleted' });
 
   } catch (error) {
     console.error(error);
-    res.status(500).json(serverMessages[500]);
+    return res.status(500).json(serverMessages[500]);
   }
 };
 
@@ -132,13 +132,16 @@ const createStudent = async (req, res) => {
 
     // Proceed with insert (database constraint is final safety)
     await Student.create(student_code, first_name, last_name, dob, major, admission_year, email);
-    res.status(201).json({ message: 'Student created' });
+
+    return res.status(201).json({ message: 'Student created' });
+
   } catch (error) {
+    console.error(error);
     // Catches database constraint violations as fallback
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ message: 'Duplicate student code' });
     }
-    res.status(500).json(serverMessages[500]);
+    return res.status(500).json(serverMessages[500]);
   }
 };
 
@@ -179,9 +182,10 @@ const updateStudent = async (req, res) => {
     return res.status(200).json({ message: "Student updated"});
 
   } catch (error) {
+    console.error(error);
     return res.status(400).json({ message: "Student update failed" })
   }
-}
+};
 
 module.exports = {
   getStudentRecord,
