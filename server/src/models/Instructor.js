@@ -54,7 +54,30 @@ const Instructor = {
             [id]
         );
         return result;
-    }
+    },
+    // Create an instructor
+    create: async (instructor_code, first_name, last_name, email, department_id) => {
+        const [result] = await db.query(
+            `INSERT INTO instructor (instructor_code, first_name, last_name, email, department_id) 
+            VALUES (?, ?, ?, ?, ?)`,
+            [instructor_code, first_name, last_name, email, department_id]
+        );
+        return result;
+    },
+    // Update an instructor
+    update: async (id, instructor_code, first_name, last_name, email, department_id) => {
+        const [result] = await db.query(
+            `UPDATE instructor SET 
+                instructor_code = ?,
+                first_name = ?,
+                last_name = ?,
+                email = ?,
+                department_id = ?
+            WHERE instructor_id = ?`,
+            [instructor_code, first_name, last_name, email, department_id, id]
+        );
+        return result;
+    },
 };
 
 module.exports = Instructor;
