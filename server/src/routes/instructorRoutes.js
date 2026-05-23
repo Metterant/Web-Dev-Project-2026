@@ -14,4 +14,10 @@ router.get('/:id', controller.getInstructorRecord);
 // GET requests hit / (root)
 router.get('/', controller.getAllInstructors);
 
+// POST requests hit / (root)
+router.post('/', controller.createInstructor)
+
+// PUT requests hit /:id
+router.put('/:id', controller.updateInstructor);
+
 module.exports = router;
