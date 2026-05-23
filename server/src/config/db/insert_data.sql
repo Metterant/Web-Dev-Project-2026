@@ -16,10 +16,10 @@ INSERT INTO department (department_name, status) VALUES
 ('Mathematics', 'active');
 
 -- 4. Insert Instructors and assign them to Departments
-INSERT INTO instructor (instructor_code, first_name, last_name, email, password_hash, department_id, status) VALUES
-('F001', 'Alan', 'Turing', 'aturing@college.edu', 'hash4', 1, 'active'),    -- CS (ID 1)
-('F002', 'Grace', 'Hopper', 'ghopper@college.edu', 'hash5', 1, 'active'),   -- CS (ID 1)
-('F003', 'Isaac', 'Newton', 'inewton@college.edu', 'hash6', 2, 'active');   -- Math (ID 2)
+INSERT INTO instructor (instructor_code, first_name, last_name, email, department_id, status) VALUES
+('F001', 'Alan', 'Turing', 'aturing@college.edu', 1, 'active'),    -- CS (ID 1)
+('F002', 'Grace', 'Hopper', 'ghopper@college.edu', 1, 'active'),   -- CS (ID 1)
+('F003', 'Isaac', 'Newton', 'inewton@college.edu', 2, 'active');   -- Math (ID 2)
 
 -- 5. Update Departments to assign Department Heads
 UPDATE department SET head_instructor_id = 1 WHERE department_id = 1; -- Alan Turing heads CS
