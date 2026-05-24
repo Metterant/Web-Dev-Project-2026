@@ -11,6 +11,9 @@ router.get('/delete/:id', controller.deleteStudentRecord)
 // GET requests hit /:id
 router.get('/:id', controller.getStudentRecord);
 
+// GET requests hit /:id/courses
+router.get('/:id/courses', controller.getCourses);
+
 // GET requests hit / (root)
 router.get('/', controller.getAllStudents);
 
@@ -19,5 +22,6 @@ router.post('/', controller.createStudent)
 
 // PUT requests hit /:id
 router.put('/:id', controller.updateStudent);
+
 
 module.exports = router;
