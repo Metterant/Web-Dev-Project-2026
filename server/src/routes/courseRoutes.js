@@ -11,6 +11,9 @@ router.get('/delete/:id', controller.deleteCourseRecord);
 // GET requests hit /:id
 router.get('/:id', controller.getCourseRecord);
 
+// GET requests hit /:id/students
+router.get('/:id/students', controller.getStudents);
+
 // GET requests hit / (root)
 router.get('/', controller.getAllCourses);
 
