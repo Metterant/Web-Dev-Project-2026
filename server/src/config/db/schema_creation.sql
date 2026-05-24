@@ -24,7 +24,7 @@ CREATE TABLE student (
 -- Create department table (head_instructor_id foreign key added later)
 CREATE TABLE department (
     department_id INT PRIMARY KEY AUTO_INCREMENT,
-    department_name VARCHAR(100) NOT NULL,
+    department_name VARCHAR(100) NOT NULL UNIQUE,
     head_instructor_id INT UNIQUE,
     status VARCHAR(20) DEFAULT 'active' NOT NULL
 );
@@ -62,9 +62,44 @@ CREATE TABLE enrollment (
     enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
     student_id INT,
     course_id INT,
-    semester VARCHAR(20) NOT NULL, -- e.g., 'Fall 2026'
+    semester VARCHAR(5) NOT NULL, -- e.g., 'Fall 2026'
     grade VARCHAR(5),
     status VARCHAR(20) DEFAULT 'active' NOT NULL,
     FOREIGN KEY (student_id) REFERENCES student(student_id),
-    FOREIGN KEY (course_id) REFERENCES course(course_id)
+    FOREIGN KEY (course_id) REFERENCES course(course_id),
+    CONSTRAINT check_semester CHECK (semester REGEXP '^[0-9]{5}$')
+);
+
+-- Add indexes to enrollment table
+ALTER TABLE enrollment
+  ADD CONSTRAINT uq_enrollment UNIQUE (student_id, course_id, semester),
+  ADD INDEX idx_enrollment_course_sem_status_student (course_id, semester, status, student_id),
+  ADD INDEX idx_enrollment_student_sem_status_course (student_id, semester, status, course_id);
+
+-- Create View for data-enriched Instructor table
+CREATE VIEW `instructor_view` AS (
+SELECT 
+    instructor_id, 
+    instructor_code, 
+    first_name, 
+    last_name, 
+    email, 
+    i.department_id,
+    department_name, 
+    i.status
+FROM instructor i LEFT JOIN department d
+    ON i.department_id = d.department_id
+);
+
+-- Create View for data-enriched Department table
+CREATE VIEW `department_view` AS (
+SELECT 
+    d.department_id, 
+    department_name, 
+    head_instructor_id, 
+    first_name AS ins_fname,
+    last_name AS ins_lname,
+    d.status
+FROM department d LEFT JOIN instructor i
+    ON d.head_instructor_id = i.instructor_id
 );
