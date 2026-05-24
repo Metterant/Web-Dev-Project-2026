@@ -120,6 +120,23 @@ class CourseService {
       throw { status: 400, message: 'Course update failed' };
     }
   }
+
+  static async getStudents(courseId, semester, page = 1) {
+    const course = await CourseService.getCourseById(courseId);
+
+    if (!course)
+      throw { status: 404, message: 'Course not found' };
+
+    if (!validationUtils.isValidSemesterCode(semester))
+      throw { status: 400, message: 'Invalid semester code' };
+    
+    const students = Course.getStudents(courseId, semester, page);
+
+    if (!students || students.length === 0) {
+      return { status: 200, message: 'No students found' };
+    }
+    return students;
+  }
 }
 
 module.exports = CourseService;
