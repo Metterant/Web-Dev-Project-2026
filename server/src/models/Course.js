@@ -70,6 +70,22 @@ const Course = {
             [course_code, course_name, credits, department_id, instructor_id, id]
         );
         return result;
+    },
+    getStudents: async (course_id, semester, page = 1) => {
+        const [students] = await db.query(`
+            SELECT s.student_id, s.student_code, s.first_name, s.last_name
+            FROM enrollment e
+            JOIN student s ON s.student_id = e.student_id
+            WHERE e.course_id = ?
+                AND e.semester = ?
+                AND e.status = 'active'
+                AND s.status = 'active'
+            ORDER BY s.student_code
+            LIMIT ? OFFSET ?;
+            `,
+            [course_id, semester, PAGE_SIZE, getOffset(page) || 0]
+        );
+        return students;
     }
 };
 
