@@ -29,7 +29,7 @@ const Student = {
     // Search students by keyword
     search: async (keyword = '', page = 1, sort = 'student_code', order = 'ASC') => {
         const normalizedKeyword = keyword.trim();
-        
+
         const allowedColumns = ['student_code', 'first_name', 'last_name', 'dob', 'major', 'admission_year', 'email'];
         const safeSort = allowedColumns.includes(sort.trim()) ? sort.trim() : 'student_code';
         const safeOrder = order.toUpperCase().trim() === 'DESC' ? 'DESC' : 'ASC';
@@ -81,6 +81,23 @@ const Student = {
         );
         return result;
     },
+    // Get student courses
+    getCourses: async (student_id, semester, page = 1) => {
+        const [courses] = await db.query(`
+            SELECT c.course_id, c.course_code, c.course_name, e.semester ,c.credits
+            FROM enrollment e
+            JOIN course c ON c.course_id = e.course_id
+            WHERE e.student_id = ?
+                AND e.semester LIKE ?
+                AND e.status = 'active'
+                AND c.status = 'active'
+            ORDER BY c.course_code
+            LIMIT ? OFFSET ?;
+            `,
+            [student_id, `%${semester}%`, PAGE_SIZE, getOffset(page) || 0]
+        );
+        return courses;
+    }
 };
 
 module.exports = Student;
