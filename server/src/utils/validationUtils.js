@@ -45,11 +45,19 @@ function isValidCourseCode(codeString) {
   return regex.test(codeString);
 }
 
+function isValidSemesterCode(semCode) {
+  if (!semCode) return false;
+
+  const regex = /^\d{5}$/;
+  return regex.test(semCode);
+}
+
 module.exports = { 
   isValidMySQLDate, 
   isValidEmail, 
   isValidName,
   isValidStudentCode,
   isValidInstructorCode,
-  isValidCourseCode
+  isValidCourseCode,
+  isValidSemesterCode
 };
