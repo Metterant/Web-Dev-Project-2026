@@ -33,8 +33,8 @@ INSERT INTO course (course_code, course_name, credits, department_id, instructor
 
 -- 7. Insert Enrollments (Now includes Semester)
 INSERT INTO enrollment (student_id, course_id, semester, grade, status) VALUES
-(1, 1, 'Fall 2025', 'A', 'active'),     -- Alice took Intro to Programming last Fall
-(1, 2, 'Spring 2026', 'B+', 'active'),  -- Alice took Data Structures in the Spring
-(2, 1, 'Fall 2025', 'A-', 'active'),    -- Bob took Intro to Programming last Fall
-(2, 3, 'Fall 2026', NULL, 'active'),    -- Bob is in Calculus I this coming Fall (no grade yet)
-(3, 2, 'Fall 2026', NULL, 'active');    -- Charlie is in Data Structures this coming Fall (no grade yet)
+(1, 1, '20251', 'A', 'active'),
+(1, 2, '20252', 'B+', 'active'), 
+(2, 1, '20251', 'A-', 'active'),   
+(2, 3, '20261', NULL, 'active'),    
+(3, 2, '20261', NULL, 'active');   
