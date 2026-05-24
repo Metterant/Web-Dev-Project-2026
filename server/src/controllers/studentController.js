@@ -91,11 +91,30 @@ const updateStudent = async (req, res) => {
   }
 };
 
+const getCourses = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const semester = req.query.semester;
+    const page = req.query.page;
+
+    const courses = await StudentService.getCourses(studentId, semester, page);
+
+    return res.status(200).json(courses);
+
+  } catch (error) {
+    if (error.status) 
+      return res.status(error.status).json({ message: error.message });
+    console.error(error);
+    return res.status(400).json({ message: "Student update failed" })
+  }
+};
+
 module.exports = {
   getStudentRecord,
   getAllStudents,
   searchStudents,
   deleteStudentRecord,
   createStudent,
-  updateStudent
+  updateStudent,
+  getCourses
 };
