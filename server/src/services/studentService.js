@@ -150,9 +150,27 @@ class StudentService {
     try {
       await Student.update(studentId, student_code, first_name, last_name, dob, major, admission_year, email);
       return { message: 'Student updated' };
+
     } catch (error) {
       throw { status: 400, message: 'Student update failed' };
     }
+  }
+  
+  // Get Courses of a Student
+  static async getCourses(id, semester = '', page = 1) {
+    const student = await Student.findById(id);
+    if (!student)
+      throw { status: 404, message: 'Student not found' };
+
+    if (!validationUtils.isValidSemesterCode(semester))
+      semester = '';
+
+    const courses = await Student.getCourses(id, semester, page);
+
+    if (!courses || courses.length === 0) {
+      return { status: 200, message: 'No courses found' };
+    }
+    return courses;
   }
 }
 
