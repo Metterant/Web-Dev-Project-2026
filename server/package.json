@@ -5,6 +5,7 @@
     "#db/*": "./src/config/db/*.js",
     "#middlewares/*": "./src/middlewares/*.js",
     "#models/*": "./src/models/*.js",
+    "#services/*": "./src/services/*.js",
     "#routes/*": "./src/routes/*.js",
     "#utils/*": "./src/utils/*.js"
   },
