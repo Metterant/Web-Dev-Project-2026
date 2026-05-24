@@ -17,7 +17,7 @@ cd server
 ```
 
 ``` bash
-npm start dev
+npm run dev
 ```
 
 ### RUN CLIENT
