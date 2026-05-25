@@ -48,7 +48,7 @@ FOREIGN KEY (head_instructor_id) REFERENCES instructor(instructor_id);
 
 CREATE TABLE course (
     course_id INT PRIMARY KEY AUTO_INCREMENT,
-    course_code VARCHAR(10) NOT NULL UNIQUE,
+    course_code VARCHAR(10) NOT NULL,
     course_name VARCHAR(100) NOT NULL,
     credits INT NOT NULL,
     department_id INT,
@@ -102,4 +102,40 @@ SELECT
     d.status
 FROM department d LEFT JOIN instructor i
     ON d.head_instructor_id = i.instructor_id
+);
+
+-- Create View for data-enriched Course table
+CREATE VIEW `course_view` AS (
+SELECT
+    c.course_id,
+    c.course_code,
+    c.course_name,
+    c.credits,
+    c.department_id,
+    d.department_name,
+    c.instructor_id,
+    i.instructor_code,
+    i.first_name AS ins_fname,
+    i.last_name AS ins_lname,
+    c.status,
+    COUNT(e.enrollment_id) AS enrollment_count
+FROM course c
+LEFT JOIN department d
+    ON c.department_id = d.department_id
+LEFT JOIN instructor i
+    ON c.instructor_id = i.instructor_id
+LEFT JOIN enrollment e
+    ON c.course_id = e.course_id
+GROUP BY
+    c.course_id,
+    c.course_code,
+    c.course_name,
+    c.credits,
+    c.department_id,
+    d.department_name,
+    c.instructor_id,
+    i.instructor_code,
+    i.first_name,
+    i.last_name,
+    c.status
 );
