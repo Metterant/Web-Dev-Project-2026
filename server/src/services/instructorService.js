@@ -136,6 +136,20 @@ class InstructorService {
       throw { status: 400, message: 'Instructor update failed' };
     }
   }
+
+  static async getCourses(instructor_id, page = 1) {
+    const instructor = Instructor.findById(instructor_id);
+
+    if (!instructor)
+      throw { status: 404, message: 'Instructor not found' };
+
+    const courses = await Instructor.getCourses(instructor_id, page);
+
+    if (!courses || courses.length === 0)
+      return { status: 200, message: 'No courses found' };
+
+    return courses;
+  }
 }
 
 module.exports = InstructorService;

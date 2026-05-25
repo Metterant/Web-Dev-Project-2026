@@ -78,6 +78,13 @@ const Instructor = {
         );
         return result;
     },
+    getCourses: async (instructor_id, page = 1) => {
+        const [courses] = await db.query(
+            `SELECT course_code, course_name, credits, department_name FROM course_view WHERE instructor_id = ? LIMIT ? OFFSET ?`,
+            [instructor_id, PAGE_SIZE, getOffset(page) || 0]
+        );
+        return courses;
+    }
 };
 
 module.exports = Instructor;

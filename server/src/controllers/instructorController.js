@@ -90,6 +90,23 @@ const updateInstructor = async (req, res) => {
   }
 };
 
+const getCourses = async (req, res) => {
+  try {
+    const instructorId = req.params.id;
+    const page = req.query.page;
+
+    const courses = await InstructorService.getCourses(instructorId, page);
+    return res.status(200).json(courses);
+
+  } catch (error) {
+    if (error.status)
+      return res.status(error.status).json({ message: error.message });
+    console.error(error);
+    return res.status(500).json(serverMessages[500]);
+  }
+};
+
+
 module.exports = { 
   getInstructorRecord, 
   getAllInstructors,
@@ -97,4 +114,5 @@ module.exports = {
   deleteInstructorRecord,
   createInstructor,
   updateInstructor,
+  getCourses
 };
