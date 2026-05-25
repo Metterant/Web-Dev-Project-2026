@@ -4,16 +4,16 @@ const { getOffset, PAGE_SIZE } = require('#utils/searchUtils');
 const Course = {
     getAll: async (page = 1) => {
         const [rows] = await db.query(
-            `SELECT course_code, course_name, credits, department_id, instructor_id
-             FROM course WHERE status = 'active' ORDER BY department_id ASC LIMIT ? OFFSET ?`,
+            `SELECT course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname
+             FROM course_view WHERE status = 'active' ORDER BY department_id ASC LIMIT ? OFFSET ?`,
             [PAGE_SIZE, getOffset(page) || 0]
         );
         return rows;
     },
     findById: async (id) => {
         const [rows] = await db.query(
-            `SELECT course_code, course_name, credits, department_id, instructor_id
-             FROM course WHERE course_id = ? AND status = 'active'`,
+            `SELECT course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname
+             FROM course_view WHERE course_id = ? AND status = 'active'`,
             [id]
         );
         return rows[0];
