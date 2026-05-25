@@ -35,11 +35,18 @@ const Course = {
 
         const queryKeyword = `%${normalizedKeyword.toLowerCase()}%`;
         const [rows] = await db.query(
-            `SELECT course_code, course_name, credits, department_id, instructor_id
-             FROM course
-             WHERE status = 'active' AND (course_code LIKE ? OR course_name LIKE ?)
+            `SELECT course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, enrollment_count
+             FROM course_view
+             WHERE status = 'active' AND (
+                course_code LIKE ? 
+                OR course_name LIKE ?
+                OR department_name LIKE ?
+                OR instructor_code LIKE ?
+                OR ins_fname = ?
+                OR ins_lname = ?
+             )
              ORDER BY ${safeSort} ${safeOrder} LIMIT ? OFFSET ?`,
-            [queryKeyword, queryKeyword, PAGE_SIZE, getOffset(page) || 0]
+            [queryKeyword, queryKeyword, queryKeyword, queryKeyword, queryKeyword, queryKeyword, PAGE_SIZE, getOffset(page) || 0]
         );
         return rows;
     },
@@ -72,20 +79,31 @@ const Course = {
         return result;
     },
     getStudents: async (course_id, semester, page = 1) => {
-        const [students] = await db.query(`
-            SELECT s.student_id, s.student_code, s.first_name, s.last_name
-            FROM enrollment e
-            JOIN student s ON s.student_id = e.student_id
-            WHERE e.course_id = ?
+        const [students] = await db.query(
+            `SELECT s.student_id, s.student_code, s.first_name, s.last_name
+             FROM enrollment e
+             JOIN student s ON s.student_id = e.student_id
+             WHERE e.course_id = ?
                 AND e.semester = ?
                 AND e.status = 'active'
                 AND s.status = 'active'
-            ORDER BY s.student_code
-            LIMIT ? OFFSET ?;
-            `,
+             ORDER BY s.student_code
+             LIMIT ? OFFSET ?`,
             [course_id, semester, PAGE_SIZE, getOffset(page) || 0]
         );
         return students;
+    },
+    // Multiple Instructors can teach one course, so that would be convenience to find all of them
+    getInstructors: async (course_code, page = 1) => {
+        const [instructors] = await db.query(
+            `SELECT instructor_code, ins_fname, ins_lname, enrollment_count
+             FROM course_view
+             WHERE course_code = ?
+             ORDER BY instructor_code
+             LIMIT ? OFFSET ?`,
+            [course_code, PAGE_SIZE, getOffset(page) || 0]
+        );
+        return instructors;
     }
 };
 
