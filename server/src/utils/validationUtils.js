@@ -52,6 +52,15 @@ function isValidSemesterCode(semCode) {
   return regex.test(semCode);
 }
 
+function isValidPeriod(periodValue) {
+  const period = Number(periodValue);
+  return Number.isInteger(period) && period >= 0 && period <= 10;
+}
+
+function isValidPeriodRange(startPeriod, endPeriod) {
+  return isValidPeriod(startPeriod) && isValidPeriod(endPeriod) && Number(startPeriod) <= Number(endPeriod);
+}
+
 module.exports = { 
   isValidMySQLDate, 
   isValidEmail, 
@@ -59,5 +68,7 @@ module.exports = {
   isValidStudentCode,
   isValidInstructorCode,
   isValidCourseCode,
-  isValidSemesterCode
+  isValidSemesterCode,
+  isValidPeriod,
+  isValidPeriodRange
 };
