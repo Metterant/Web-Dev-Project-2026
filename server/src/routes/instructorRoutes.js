@@ -14,6 +14,9 @@ router.get('/:id', controller.getInstructorRecord);
 // GET requests hit /:id/courses
 router.get('/:id/courses', controller.getCourses);
 
+// GET requests hit /:id/schedule
+router.get('/:id/schedule', controller.getSchedule);
+
 // GET requests hit / (root)
 router.get('/', controller.getAllInstructors);
 

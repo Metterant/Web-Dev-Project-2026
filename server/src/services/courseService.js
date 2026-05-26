@@ -29,14 +29,13 @@ class CourseService {
 
   // Create a new course
   static async createCourse(courseData) {
-    let { course_code, course_name, credits, department_id, instructor_id } = courseData;
+    let { course_code, course_name, credits, department_id } = courseData;
 
     // Data transformation
     course_code = course_code ? course_code.trim().toUpperCase() : '';
     course_name = capitalize(course_name);
     credits = Number(credits);
     department_id = department_id !== undefined && department_id !== null ? Number(department_id) : null;
-    instructor_id = instructor_id !== undefined && instructor_id !== null ? Number(instructor_id) : null;
 
     // Validation
     if (!validationUtils.isValidCourseCode(course_code)) {
@@ -59,7 +58,7 @@ class CourseService {
 
     // Create course
     try {
-      await Course.create(course_code, course_name, credits, department_id, instructor_id);
+      await Course.create(course_code, course_name, credits, department_id);
       return { message: 'Course created' };
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
@@ -90,7 +89,7 @@ class CourseService {
       throw { status: 404, message: 'Course not found' };
     }
 
-    let { course_code, course_name, credits, department_id, instructor_id } = courseData;
+    let { course_code, course_name, credits, department_id } = courseData;
 
     // Validate and keep current value if invalid
     if (!validationUtils.isValidCourseCode(course_code)) {
@@ -111,13 +110,55 @@ class CourseService {
     }
 
     department_id = department_id !== undefined && department_id !== null ? Number(department_id) : current.department_id;
-    instructor_id = instructor_id !== undefined && instructor_id !== null ? Number(instructor_id) : current.instructor_id;
 
     try {
-      await Course.update(courseId, course_code, course_name, credits, department_id, instructor_id);
+      await Course.update(courseId, course_code, course_name, credits, department_id);
       return { message: 'Course updated' };
     } catch (error) {
       throw { status: 400, message: 'Course update failed' };
+    }
+  }
+
+  // Assign an instructor to a course with schedule info
+  static async assignInstructor(courseId, instructorData) {
+    let { instructor_id, day_of_week, start_period, end_period } = instructorData;
+
+    // Validation
+    instructor_id = Number(instructor_id);
+    start_period = Number(start_period);
+    end_period = Number(end_period);
+
+    if (!validationUtils.isValidPeriodRange(start_period, end_period)) {
+      throw { status: 406, message: 'Invalid period range' };
+    }
+
+    // Validate day_of_week
+    const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    if (!validDays.includes(day_of_week)) {
+      throw { status: 406, message: 'Invalid day of week' };
+    }
+
+    try {
+      await Course.addInstructor(courseId, instructor_id, day_of_week, start_period, end_period);
+      return { message: 'Instructor assigned to course' };
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw { status: 409, message: 'Instructor already assigned to this course' };
+      }
+      throw error;
+    }
+  }
+
+  // Unassign an instructor from a course
+  static async unassignInstructor(courseInstructorId) {
+    try {
+      const result = await Course.removeInstructor(courseInstructorId);
+      if (result.affectedRows === 1) {
+        return { message: 'Instructor unassigned from course' };
+      }
+      throw { status: 404, message: 'Assignment not found' };
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -130,7 +171,7 @@ class CourseService {
     if (!validationUtils.isValidSemesterCode(semester))
       throw { status: 400, message: 'Invalid semester code' };
     
-    const students = Course.getStudents(courseId, semester, page);
+    const students = await Course.getStudents(courseId, semester, page);
 
     if (!students || students.length === 0) {
       return { status: 200, message: 'No students found' };

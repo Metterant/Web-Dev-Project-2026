@@ -84,19 +84,35 @@ const Student = {
     // Get student courses
     getCourses: async (student_id, semester, page = 1) => {
         const [courses] = await db.query(`
-            SELECT c.course_id, c.course_code, c.course_name, e.semester ,c.credits
+            SELECT c.course_id, c.course_code, c.course_name, c.credits, COUNT(ci.instructor_id) as instructor_count
             FROM enrollment e
             JOIN course c ON c.course_id = e.course_id
+            LEFT JOIN course_instructor ci ON c.course_id = ci.course_id AND ci.status = 'active'
             WHERE e.student_id = ?
                 AND e.semester LIKE ?
                 AND e.status = 'active'
                 AND c.status = 'active'
+            GROUP BY c.course_id, c.course_code, c.course_name, c.credits
             ORDER BY c.course_code
             LIMIT ? OFFSET ?;
             `,
             [student_id, `%${semester}%`, PAGE_SIZE, getOffset(page) || 0]
         );
         return courses;
+    },
+    getSchedule: async (student_id, semester = '', page = 1) => {
+        const [rows] = await db.query(
+             `SELECT course_code, course_name, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period, semester, grade, enrollment_status, course_status
+             FROM student_schedule_view
+             WHERE student_id = ?
+               AND semester LIKE ?
+               AND enrollment_status = 'active'
+               AND course_status = 'active'
+             ORDER BY semester, course_code
+             LIMIT ? OFFSET ?`,
+            [student_id, `%${semester}%`, PAGE_SIZE, getOffset(page) || 0]
+        );
+        return rows;
     }
 };
 

@@ -29,7 +29,7 @@ const Instructor = {
     // Search instructors by keyword
     search: async (keyword = '', page = 1, sort = 'instructor_code', order = 'ASC') => {
         const normalizedKeyword = keyword.trim();
-        
+
         const allowedColumns = ['instructor_code', 'first_name', 'last_name', 'email'];
         const safeSort = allowedColumns.includes(sort.trim()) ? sort.trim() : 'instructor_code';
         const safeOrder = order.toUpperCase().trim() === 'DESC' ? 'DESC' : 'ASC';
@@ -80,10 +80,30 @@ const Instructor = {
     },
     getCourses: async (instructor_id, page = 1) => {
         const [courses] = await db.query(
-            `SELECT course_code, course_name, credits, department_name FROM course_view WHERE instructor_id = ? LIMIT ? OFFSET ?`,
+            `SELECT DISTINCT c.course_id, c.course_code, c.course_name, c.credits, d.department_name
+             FROM course c
+             JOIN course_instructor ci ON c.course_id = ci.course_id
+             LEFT JOIN department d ON c.department_id = d.department_id
+             WHERE ci.instructor_id = ? AND ci.status = 'active' AND c.status = 'active'
+             ORDER BY c.course_code
+             LIMIT ? OFFSET ?`,
             [instructor_id, PAGE_SIZE, getOffset(page) || 0]
         );
         return courses;
+    },
+    getSchedule: async (instructor_id, semester = '', page = 1) => {
+        const [rows] = await db.query(
+           `SELECT course_code, course_name, credits, department_name, day_of_week, start_period, end_period
+            FROM instructor_schedule_view
+            WHERE instructor_id = ?
+                AND assignment_status = 'active'
+                AND course_status = 'active'
+                AND 
+            ORDER BY day_of_week, start_period, course_code
+            LIMIT ? OFFSET ?`,
+            [instructor_id, PAGE_SIZE, getOffset(page) || 0]
+        );
+        return rows;
     }
 };
 

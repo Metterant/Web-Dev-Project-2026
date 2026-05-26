@@ -138,7 +138,7 @@ class InstructorService {
   }
 
   static async getCourses(instructor_id, page = 1) {
-    const instructor = Instructor.findById(instructor_id);
+    const instructor = await Instructor.findById(instructor_id);
 
     if (!instructor)
       throw { status: 404, message: 'Instructor not found' };
@@ -149,6 +149,20 @@ class InstructorService {
       return { status: 200, message: 'No courses found' };
 
     return courses;
+  }
+
+  static async getSchedule(instructor_id, semester = '', page = 1) {
+    const instructor = await Instructor.findById(instructor_id);
+
+    if (!instructor)
+      throw { status: 404, message: 'Instructor not found' };
+
+    const schedule = await Instructor.getSchedule(instructor_id, semester, page);
+
+    if (!schedule || schedule.length === 0)
+      return { status: 200, message: 'No schedule found' };
+
+    return schedule;
   }
 }
 

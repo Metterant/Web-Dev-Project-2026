@@ -109,6 +109,24 @@ const getCourses = async (req, res) => {
   }
 };
 
+const getSchedule = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const semester = req.query.semester;
+    const page = req.query.page;
+
+    const schedule = await StudentService.getSchedule(studentId, semester, page);
+
+    return res.status(200).json(schedule);
+
+  } catch (error) {
+    if (error.status)
+      return res.status(error.status).json({ message: error.message });
+    console.error(error);
+    return res.status(400).json({ message: "Student schedule failed" });
+  }
+};
+
 module.exports = {
   getStudentRecord,
   getAllStudents,
@@ -116,5 +134,6 @@ module.exports = {
   deleteStudentRecord,
   createStudent,
   updateStudent,
-  getCourses
+  getCourses,
+  getSchedule
 };

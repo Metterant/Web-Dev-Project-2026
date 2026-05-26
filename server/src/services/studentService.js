@@ -172,6 +172,23 @@ class StudentService {
     }
     return courses;
   }
+
+  static async getSchedule(id, semester = '', page = 1) {
+    const student = await Student.findById(id);
+    if (!student)
+      throw { status: 404, message: 'Student not found' };
+
+    if (!validationUtils.isValidSemesterCode(semester))
+      semester = '';
+
+    const schedule = await Student.getSchedule(id, semester, page);
+
+    if (!schedule || schedule.length === 0) {
+      return { status: 200, message: 'No schedule found' };
+    }
+
+    return schedule;
+  }
 }
 
 module.exports = StudentService;

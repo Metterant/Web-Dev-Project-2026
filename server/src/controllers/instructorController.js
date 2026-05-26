@@ -106,6 +106,23 @@ const getCourses = async (req, res) => {
   }
 };
 
+const getSchedule = async (req, res) => {
+  try {
+    const instructorId = req.params.id;
+    const semester = req.query.semester;
+    const page = req.query.page;
+
+    const schedule = await InstructorService.getSchedule(instructorId, semester, page);
+    return res.status(200).json(schedule);
+
+  } catch (error) {
+    if (error.status)
+      return res.status(error.status).json({ message: error.message });
+    console.error(error);
+    return res.status(500).json(serverMessages[500]);
+  }
+};
+
 
 module.exports = { 
   getInstructorRecord, 
@@ -114,5 +131,6 @@ module.exports = {
   deleteInstructorRecord,
   createInstructor,
   updateInstructor,
-  getCourses
+  getCourses,
+  getSchedule
 };
