@@ -3,7 +3,7 @@ import './Login.css';
 
 export default function Login() {
   return (
-    <div className='app'>
+    <div className='login'>
       <div className='login-container'>
         <h1>Welcome back!</h1>
         <form action={'#logged'} method='post'>

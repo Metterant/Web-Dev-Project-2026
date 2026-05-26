@@ -3,7 +3,7 @@ import './ResetPassword.css';
 
 export default function ResetPassword() {
   return (
-    <div className='app'>
+    <div className='reset-password'>
       <div className='reset-container'>
         <h1>Reset Your Password</h1>
         <form action={'#reset-pw'} method='post'>
