@@ -1,0 +1,48 @@
+{
+  "name": "server",
+  "imports": {
+    "#controllers/*": "./src/controllers/*.js",
+    "#db/*": "./src/config/db/*.js",
+    "#middlewares/*": "./src/middlewares/*.js",
+    "#models/*": "./src/models/*.js",
+    "#routes/*": "./src/routes/*.js",
+    "#utils/*": "./src/utils/*.js",
+    "#dto/*": "./src/dto/*.js",
+    "#middleware/*": "./src/middleware/*.js",
+    "#Services/*": "./src/Services/*.js"
+
+  },
+  "version": "1.0.0",
+  "description": "A webdev project that handles basic CRUD operations",
+  "keywords": [
+    "college",
+    "database"
+  ],
+  "homepage": "https://github.com/Metterant/Web-Dev-Project-2026#readme",
+  "bugs": {
+    "url": "https://github.com/Metterant/Web-Dev-Project-2026/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Metterant/Web-Dev-Project-2026.git"
+  },
+  "license": "ISC",
+  "author": "Metterant",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index",
+    "dev": "nodemon src/index"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

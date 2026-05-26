@@ -1,0 +1,110 @@
+### ========== LOGIN ==========
+
+### Login as Student
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "alice.s@college.edu",
+    "password": "password123"
+}
+
+###
+
+### Login as Instructor (need to hash password first!)
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "inewton@college.edu",
+    "password": "password123"
+}
+
+### Login as Admin (need to hash password first!)
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin1@college.edu",
+    "password": "admin"
+}
+
+###
+
+### ========== SET TOKENS HERE ==========
+@studentToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc5Nzk5MzA2LCJleHAiOjE3Nzk4MDI5MDZ9.jrQgtg-OPrlWft_DXU77OiPYJW5ZQxNTRWZOREDH8vg
+@instructorToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInJvbGUiOiJpbnN0cnVjdG9yIiwiaWF0IjoxNzc5Nzk5MzE1LCJleHAiOjE3Nzk4MDI5MTV9.P7GNiQ1T1vsASrxY1oRLuTlO2R4sW6Wj4jzjrJrb1Gg
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3OTc5OTc5MSwiZXhwIjoxNzc5ODAzMzkxfQ.RqjO-YNzcDddcAyG6uASJGb0zMNUoE7aUakUYg9k938
+### ========== COURSE TESTS ==========
+
+### ✅ Student - Get All Courses (should 200)
+GET http://localhost:5000/api/courses
+Authorization: Bearer {{studentToken}}
+
+###
+
+### ✅ Student - Get Course by ID (should 200)
+GET http://localhost:5000/api/courses/1
+Authorization: Bearer {{studentToken}}
+
+###
+
+### ✅ Student - Search Courses (should 200)
+GET http://localhost:5000/api/courses/search?keyword=data
+Authorization: Bearer {{studentToken}}
+
+###
+
+### ❌ Student - Create Course (should 403)
+POST http://localhost:5000/api/courses/create
+Content-Type: application/json
+Authorization: Bearer {{studentToken}}
+
+{
+    "course_code": "TEST05",
+    "course_name": "Test Course",
+    "credits": 3
+}
+
+###
+
+### ✅ Instructor - Create Course (should 201)
+POST http://localhost:5000/api/courses/create
+Content-Type: application/json
+Authorization: Bearer {{instructorToken}}
+
+{
+    "course_code": "TEST03",
+    "course_name": "Test Course",
+    "credits": 3
+}
+
+### ✅ Instructor - Delete Course (should 201)
+DELETE http://localhost:5000/api/courses/4  
+Content-Type: application/json
+Authorization: Bearer {{instructorToken}}
+
+###
+
+### ✅ Admin - Create Course (should 201)
+POST http://localhost:5000/api/courses/create   
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "course_code": "TEST04",
+    "course_name": "Test Course",
+    "credits": 3
+}
+
+### ✅ Admin - Delete Course (should 201)
+DELETE http://localhost:5000/api/courses/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+
+###
+
+### ❌ No Token - Get All Courses (should 401)
+GET http://localhost:5000/api/courses
