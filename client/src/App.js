@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
+import NavBar from "./components/NavBar";
+
+// Following the BEM conventions
 
 function App() {
   const [backendData, setBackendData] = useState(null);
@@ -19,12 +23,15 @@ function App() {
   }, []);
 
   return (
-    <div>
-      {backendData && Array.isArray(backendData.tests) ? (
-        backendData.tests.map((test, i) => <p key={i}>{test}</p>)
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="app">
+      <NavBar />
+      <main className="app-main">
+        {backendData && Array.isArray(backendData.tests) ? (
+          backendData.tests.map((test, i) => <p key={i}>{test}</p>)
+        ) : (
+          <p>Loading...</p>
+        )}
+      </main>
     </div>
   );
 }
