@@ -71,7 +71,7 @@ class StudentService {
       throw { status: 409, message: `Student code '${student_code}' already exists` };
     }
 
-    // Create student
+    // Create student (user is created by DB trigger)
     try {
       await Student.create(student_code, first_name, last_name, dob, major, admission_year, email);
       return { message: 'Student created' };

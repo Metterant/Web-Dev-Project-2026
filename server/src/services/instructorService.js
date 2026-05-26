@@ -65,7 +65,7 @@ class InstructorService {
       throw { status: 409, message: `Instructor code '${instructor_code}' already exists` };
     }
 
-    // Create instructor
+    // Create instructor (user is created by DB trigger)
     try {
       await Instructor.create(instructor_code, first_name, last_name, email, department_id);
       return { message: 'Instructor created' };
