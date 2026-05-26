@@ -102,11 +102,28 @@ CREATE TABLE course (
     course_name VARCHAR(100) NOT NULL,
     credits INT NOT NULL,
     department_id INT,
-    instructor_id INT,
     status VARCHAR(20) DEFAULT 'active' NOT NULL,
     CONSTRAINT chk_course_code_format CHECK (course_code REGEXP '^[A-Z]+[0-9]+$'),
-    FOREIGN KEY (department_id) REFERENCES department(department_id),
-    FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id)
+    FOREIGN KEY (department_id) REFERENCES department(department_id)
+);
+
+CREATE TABLE course_instructor (
+    course_instructor_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id INT NOT NULL,
+    instructor_id INT NOT NULL,
+    day_of_week VARCHAR(10) NOT NULL,
+    start_period TINYINT NOT NULL,
+    end_period TINYINT NOT NULL,
+    status VARCHAR(20) DEFAULT 'active' NOT NULL,
+    CONSTRAINT chk_course_instructor_period_range CHECK (
+        start_period BETWEEN 0 AND 10 AND
+        end_period BETWEEN 0 AND 10 AND
+        start_period <= end_period
+    ),
+    CONSTRAINT chk_day_of_week CHECK (day_of_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+    FOREIGN KEY (course_id) REFERENCES course(course_id),
+    FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
+    CONSTRAINT uq_course_instructor UNIQUE (course_id, instructor_id)
 );
 
 CREATE TABLE enrollment (
@@ -164,19 +181,26 @@ SELECT
     c.credits,
     c.department_id,
     d.department_name,
-    c.instructor_id,
+    ci.course_instructor_id,
+    ci.instructor_id,
     i.instructor_code,
     i.first_name AS ins_fname,
     i.last_name AS ins_lname,
+    ci.day_of_week,
+    ci.start_period,
+    ci.end_period,
     c.status,
     COUNT(e.enrollment_id) AS enrollment_count
 FROM course c
 LEFT JOIN department d
     ON c.department_id = d.department_id
+LEFT JOIN course_instructor ci
+    ON c.course_id = ci.course_id AND ci.status = 'active'
 LEFT JOIN instructor i
-    ON c.instructor_id = i.instructor_id
+    ON ci.instructor_id = i.instructor_id
 LEFT JOIN enrollment e
-    ON c.course_id = e.course_id
+    ON c.course_id = e.course_id AND e.status = 'active'
+WHERE c.status = 'active'
 GROUP BY
     c.course_id,
     c.course_code,
@@ -184,9 +208,80 @@ GROUP BY
     c.credits,
     c.department_id,
     d.department_name,
-    c.instructor_id,
+    ci.course_instructor_id,
+    ci.instructor_id,
     i.instructor_code,
     i.first_name,
     i.last_name,
+    ci.day_of_week,
+    ci.start_period,
+    ci.end_period,
     c.status
+);
+
+-- Create View for student schedule
+CREATE VIEW `student_schedule_view` AS (
+SELECT
+    e.enrollment_id,
+    s.student_id,
+    s.student_code,
+    s.first_name AS student_fname,
+    s.last_name AS student_lname,
+    c.course_id,
+    c.course_code,
+    c.course_name,
+    c.credits,
+    c.department_id,
+    d.department_name,
+    ci.instructor_id,
+    i.instructor_code,
+    i.first_name AS ins_fname,
+    i.last_name AS ins_lname,
+    ci.day_of_week,
+    ci.start_period,
+    ci.end_period,
+    e.semester,
+    e.grade,
+    e.status AS enrollment_status,
+    c.status AS course_status
+FROM enrollment e
+JOIN student s
+    ON e.student_id = s.student_id
+JOIN course c
+    ON e.course_id = c.course_id
+LEFT JOIN department d
+    ON c.department_id = d.department_id
+LEFT JOIN course_instructor ci
+    ON c.course_id = ci.course_id AND ci.status = 'active'
+LEFT JOIN instructor i
+    ON ci.instructor_id = i.instructor_id
+);
+
+-- Create View for instructor schedule
+CREATE VIEW `instructor_schedule_view` AS (
+SELECT
+    ci.course_instructor_id,
+    ci.instructor_id,
+    i.instructor_code,
+    i.first_name AS ins_fname,
+    i.last_name AS ins_lname,
+    c.course_id,
+    c.course_code,
+    c.course_name,
+    c.credits,
+    c.department_id,
+    d.department_name,
+    ci.day_of_week,
+    ci.start_period,
+    ci.end_period,
+    c.status AS course_status,
+    ci.status AS assignment_status
+FROM course_instructor ci
+JOIN course c
+    ON ci.course_id = c.course_id
+JOIN instructor i
+    ON ci.instructor_id = i.instructor_id
+LEFT JOIN department d
+    ON c.department_id = d.department_id
+WHERE ci.status = 'active' AND c.status = 'active'
 );

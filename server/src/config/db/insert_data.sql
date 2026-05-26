@@ -21,11 +21,17 @@ INSERT INTO instructor (instructor_code, first_name, last_name, email, departmen
 UPDATE department SET head_instructor_id = 1 WHERE department_id = 1; -- Alan Turing heads CS
 UPDATE department SET head_instructor_id = 3 WHERE department_id = 2; -- Isaac Newton heads Math
 
--- 5. Insert Courses and assign to Departments and Instructors
-INSERT INTO course (course_code, course_name, credits, department_id, instructor_id, status) VALUES
-('CSIP01', 'Intro to Programming', 3, 1, 2, 'active'),  -- Taught by Grace Hopper
-('CSDS01', 'Data Structures', 4, 1, 1, 'active'),       -- Taught by Alan Turing
-('MACA01', 'Calculus I', 4, 2, 3, 'active');            -- Taught by Isaac Newton
+-- 5. Insert Courses
+INSERT INTO course (course_code, course_name, credits, department_id, status) VALUES
+('CSIP01', 'Intro to Programming', 3, 1, 'active'),
+('CSDS01', 'Data Structures', 4, 1, 'active'),
+('MACA01', 'Calculus I', 4, 2, 'active');
+
+-- 5a. Assign Instructors to Courses with Schedule Info
+INSERT INTO course_instructor (course_id, instructor_id, day_of_week, start_period, end_period, status) VALUES
+(1, 2, 'Monday', 1, 4, 'active'),     -- CSIP01 taught by Grace Hopper on Monday, periods 1-4
+(2, 1, 'Wednesday', 3, 5, 'active'),  -- CSDS01 taught by Alan Turing on Wednesday, periods 3-5
+(3, 3, 'Friday', 6, 9, 'active');     -- MACA01 taught by Isaac Newton on Friday, periods 6-9
 
 -- 6. Insert Enrollments (Now includes Semester)
 INSERT INTO enrollment (student_id, course_id, semester, grade, status) VALUES
