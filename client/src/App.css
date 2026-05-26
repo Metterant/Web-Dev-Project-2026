@@ -3,10 +3,11 @@
 }
 
 .app-main {
-	padding: 48px 10vw 80px;
+	padding: 80px 10vw 80px;
 	color: #1b120d;
 	display: grid;
 	gap: 16px;
+	margin-top: 0;
 }
 
 .app-main p {
