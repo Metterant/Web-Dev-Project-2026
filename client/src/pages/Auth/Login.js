@@ -10,8 +10,8 @@ export default function Login() {
           <div className="form-group">
             <label for="username">Username</label>
             <input type="text"
-              id="user_id"
-              name="user_id"
+              id="username"
+              name="username"
               placeholder="Enter your username"
               required
               autofocus>

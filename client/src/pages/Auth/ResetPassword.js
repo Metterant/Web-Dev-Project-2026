@@ -8,10 +8,10 @@ export default function ResetPassword() {
         <h1>Reset Your Password</h1>
         <form action={'#reset-pw'} method='post'>
           <div className="form-group">
-            <label for="user_id">Username</label>
+            <label for="username">Username</label>
             <input type="text"
-              id="user_id"
-              name="user_id"
+              id="username"
+              name="username"
               placeholder="Enter your username"
               required
               autofocus>
