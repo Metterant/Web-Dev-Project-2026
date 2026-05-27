@@ -96,13 +96,39 @@
   font-weight: 650;
 }
 
-.navbar__user-type {
+.navbar__user-type--admin {
   padding: 6px 10px;
   border-radius: 999px;
   background-color: red;
   color: white;
   font-weight: 650;
 }
+
+.navbar__user-typ--guest {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background-color: rgb(103, 103, 103);
+  color: white;
+  font-weight: 650;
+}
+
+.navbar__user-type--student {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background-color: rgb(33, 154, 45);
+  color: white;
+  font-weight: 650;
+}
+
+.navbar__user-type--instructor {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background-color: rgb(49, 70, 255);
+  color: white;
+  font-weight: 650;
+}
+
+
 
 .navbar__actions {
   display: flex;

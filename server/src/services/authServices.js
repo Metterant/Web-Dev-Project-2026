@@ -21,7 +21,8 @@ const login = async (username, password) => {
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
     );
-    return token;
+    // Return both token and user info so controller can set cookie and respond with user
+    return { token, user: { userId: user.user_id, role: user.role } };
 };
 
 module.exports = { login };

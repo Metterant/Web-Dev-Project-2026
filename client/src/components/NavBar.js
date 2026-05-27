@@ -1,7 +1,8 @@
 import React from "react";
 import "./NavBar.css";
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { apiFetch, clearAuthToken } from "../services/apiClient";
+import { logout as apiLogout, getCurrentUser } from '../services/authClient';
 
 const navItems = [
   { label: "Dashboard", href: "/" },
@@ -14,13 +15,24 @@ const navItems = [
 function NavBar() {
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    getCurrentUser().then((u) => {
+      if (mounted) setUser(u);
+    });
+    return () => { mounted = false; };
+  }, []);
+
+  const hasRole = (...roles) => roles.includes(user?.role);
+
   const handleLogout = async () => {
     try {
-      await apiFetch('/api/auth/logout', { method: 'POST' });
+      await apiLogout();
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
-      clearAuthToken();
       navigate('/login', { replace: true });
     }
   };
@@ -46,13 +58,14 @@ function NavBar() {
       </nav>
 
       <div className="navbar__user-info">
-        <div className="navbar__user-id">
-          MikeHawk
-        </div>
-
-        <div className="navbar__user-type">
-          Admin
-        </div>
+        <div className="navbar__user-id">{user?.username || 'User'}</div>
+        {hasRole('admin') ?
+          (<div className="navbar__user-type--admin">{user?.role.toUpperCase() || 'Admin'}</div>) :
+          hasRole('instructor') ?
+            (<div className="navbar__user-type--instructor">{user?.role.toUpperCase() || 'Instructor'}</div>) :
+            hasRole('student') ?
+              (<div className="navbar__user-type--student">{user?.role.toUpperCase() || 'Student'}</div>) :
+              (<div className="navbar__user-type--guest">{user?.role.toUpperCase() || 'Guest'}</div>)}
       </div>
 
       <div className="navbar__actions">

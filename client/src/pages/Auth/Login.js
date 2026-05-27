@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { apiFetch, setAuthToken } from '../../services/apiClient';
+import { apiFetch } from '../../services/apiClient';
 import './Login.css';
 
 export default function Login() {
@@ -29,8 +29,8 @@ export default function Login() {
         throw new Error(payload.message || `HTTP ${response.status}`);
       }
 
-      const payload = await response.json();
-      setAuthToken(payload.token);
+      // Server sets httpOnly cookie; response includes user info
+      await response.json();
       navigate(fromPath, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed');
