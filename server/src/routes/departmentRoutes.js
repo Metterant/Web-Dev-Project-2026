@@ -6,7 +6,7 @@ const { authMiddleware, allowedRoles } = require('#middlewares/authMiddlewares')
 router.use(authMiddleware);
 
 router.get('/search', controller.searchDepartments);
-router.get('/delete/:id', controller.deleteDepartmentRecord);
+router.get('/delete/:id', allowedRoles(['admin']), controller.deleteDepartmentRecord);
 router.get('/:id', controller.getDepartmentRecord);
 router.get('/', controller.getAllDepartments);
 router.post('/', allowedRoles(['admin']), controller.createDepartment);

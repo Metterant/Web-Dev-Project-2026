@@ -127,22 +127,22 @@ CREATE TABLE course_instructor (
 );
 
 CREATE TABLE enrollment (
-    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
-    student_id INT,
-    course_id INT,
-    semester VARCHAR(5) NOT NULL, -- e.g., 'Fall 2026'
-    grade VARCHAR(5),
-    status VARCHAR(20) DEFAULT 'active' NOT NULL,
-    FOREIGN KEY (student_id) REFERENCES student(student_id),
-    FOREIGN KEY (course_id) REFERENCES course(course_id),
-    CONSTRAINT check_semester CHECK (semester REGEXP '^[0-9]{5}$')
+        enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+        student_id INT,
+        course_instructor_id INT,
+        semester VARCHAR(5) NOT NULL, -- format: 'YYYYS' (e.g., '20261')
+        grade VARCHAR(5),
+        status VARCHAR(20) DEFAULT 'active' NOT NULL,
+        FOREIGN KEY (student_id) REFERENCES student(student_id),
+        FOREIGN KEY (course_instructor_id) REFERENCES course_instructor(course_instructor_id),
+        CONSTRAINT check_semester CHECK (semester REGEXP '^[0-9]{5}$')
 );
 
--- Add indexes to enrollment table
+-- Add indexes to enrollment table (updated to use course_instructor_id)
 ALTER TABLE enrollment
-  ADD CONSTRAINT uq_enrollment UNIQUE (student_id, course_id, semester),
-  ADD INDEX idx_enrollment_course_sem_status_student (course_id, semester, status, student_id),
-  ADD INDEX idx_enrollment_student_sem_status_course (student_id, semester, status, course_id);
+    ADD CONSTRAINT uq_enrollment UNIQUE (student_id, course_instructor_id, semester),
+    ADD INDEX idx_enrollment_courseinstructor_sem_status_student (course_instructor_id, semester, status, student_id),
+    ADD INDEX idx_enrollment_student_sem_status_courseinstructor (student_id, semester, status, course_instructor_id);
 
 -- Create View for data-enriched Instructor table
 CREATE VIEW `instructor_view` AS (
@@ -199,7 +199,7 @@ LEFT JOIN course_instructor ci
 LEFT JOIN instructor i
     ON ci.instructor_id = i.instructor_id
 LEFT JOIN enrollment e
-    ON c.course_id = e.course_id AND e.status = 'active'
+    ON ci.course_instructor_id = e.course_instructor_id AND e.status = 'active'
 WHERE c.status = 'active'
 GROUP BY
     c.course_id,
@@ -247,12 +247,12 @@ SELECT
 FROM enrollment e
 JOIN student s
     ON e.student_id = s.student_id
+JOIN course_instructor ci
+    ON e.course_instructor_id = ci.course_instructor_id
 JOIN course c
-    ON e.course_id = c.course_id
+    ON ci.course_id = c.course_id
 LEFT JOIN department d
     ON c.department_id = d.department_id
-LEFT JOIN course_instructor ci
-    ON c.course_id = ci.course_id AND ci.status = 'active'
 LEFT JOIN instructor i
     ON ci.instructor_id = i.instructor_id
 );

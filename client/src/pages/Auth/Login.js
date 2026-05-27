@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../services/apiClient';
+import { useUser } from '../../context/UserContext';
 import './Login.css';
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,6 +33,10 @@ export default function Login() {
 
       // Server sets httpOnly cookie; response includes user info
       await response.json();
+      
+      // Update UserContext with new user data
+      await login();
+      
       navigate(fromPath, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed');

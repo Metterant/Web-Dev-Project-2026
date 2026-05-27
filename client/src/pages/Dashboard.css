@@ -1,0 +1,64 @@
+.link-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+	gap: 14px;
+	margin-top: 12px;
+	padding: 14px;
+	border-radius: 16px;
+	background: linear-gradient(135deg, #edf4ff 0%, #f6fbff 55%, #f2f8ff 100%);
+}
+
+.dashboard-link-card {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	border-radius: 14px;
+	border: 1px solid rgba(28, 39, 66, 0.12);
+	background: linear-gradient(160deg, #f8fbff 0%, #eef4ff 100%);
+	color: #1c2742;
+	text-decoration: none;
+	overflow: hidden;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dashboard-link-card:nth-child(1) {
+	background: linear-gradient(145deg, #fff1de 0%, #ffd8c2 100%);
+}
+
+.dashboard-link-card:nth-child(2) {
+	background: linear-gradient(145deg, #e7f0ff 0%, #cadfff 100%);
+}
+
+.dashboard-link-card:nth-child(3) {
+	background: linear-gradient(145deg, #e6fff4 0%, #bff6de 100%);
+}
+
+.dashboard-link-card:nth-child(4) {
+	background: linear-gradient(145deg, #f7ebff 0%, #e4cffd 100%);
+}
+
+.dashboard-link-card:nth-child(5) {
+	background: linear-gradient(145deg, #fff7d8 0%, #ffe7a8 100%);
+}
+
+.dashboard-link-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 18px rgba(28, 39, 66, 0.16);
+}
+
+.dashboard-link-card__emoji {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -56%);
+	font-size: clamp(40px, 8vw, 66px);
+	line-height: 1;
+}
+
+.dashboard-link-card__label {
+	position: absolute;
+	left: 12px;
+	bottom: 10px;
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}

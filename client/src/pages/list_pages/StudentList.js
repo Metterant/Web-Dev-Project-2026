@@ -3,6 +3,7 @@ import './ListPage.css';
 import '../../App.css'
 import SearchBox from '../../components/SearchBox';
 import { apiFetch } from '../../services/apiClient';
+import { getCurrentUser } from '../../services/authClient';
 
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -32,6 +33,7 @@ export default function StudentList() {
   const navigate = useNavigate();
   const [backendData, setBackendData] = useState(null);
   const [hasNextPage, setHasNextPage] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   // Extracted loader so other actions (delete) can refresh the list
   const loadStudents = useCallback(async () => {
@@ -54,6 +56,20 @@ export default function StudentList() {
       setHasNextPage(false);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    getCurrentUser().then((user) => {
+      if (!mounted) return;
+      setIsAdmin(user?.role === 'admin');
+    }).catch(() => {
+      if (!mounted) return;
+      setIsAdmin(false);
+    });
+
+    return () => { mounted = false; };
+  }, []);
 
   useEffect(() => {
     const nextParams = new URLSearchParams(searchParams);
@@ -159,9 +175,10 @@ export default function StudentList() {
             <tbody>
               {backendData.map((student) => (
                 <tr 
+                  className={isAdmin ? 'list-row--clickable' : ''}
                   key={student.student_id} 
-                  onClick={() => navigate(`/students/${student.student_id}`)}
-                  title={`Click to navigate to Edit form for Student with Student Code ${student.student_code}`}
+                  onClick={isAdmin ? () => navigate(`/students/${student.student_id}`) : undefined}
+                  title={isAdmin ? `Click to navigate to Edit form for Student with Student Code ${student.student_code}` : 'Only admins can edit records'}
                   >
                   <td>{student.student_code}</td>
                   <td>{student.first_name}</td>

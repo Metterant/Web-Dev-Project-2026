@@ -93,15 +93,15 @@ const Instructor = {
     },
     getSchedule: async (instructor_id, semester = '', page = 1) => {
         const [rows] = await db.query(
-           `SELECT course_code, course_name, credits, department_name, day_of_week, start_period, end_period
+           `SELECT course_id, course_code, course_name, credits, department_name, day_of_week, start_period, end_period, day_of_week
             FROM instructor_schedule_view
             WHERE instructor_id = ?
                 AND assignment_status = 'active'
                 AND course_status = 'active'
-                AND 
+                AND semester = ?
             ORDER BY day_of_week, start_period, course_code
             LIMIT ? OFFSET ?`,
-            [instructor_id, PAGE_SIZE, getOffset(page) || 0]
+            [instructor_id, semester, PAGE_SIZE, getOffset(page) || 0]
         );
         return rows;
     }

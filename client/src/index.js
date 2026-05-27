@@ -5,8 +5,10 @@ import './index.css';
 
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'; 
+import { UserProvider } from './context/UserContext';
 
 import App from './App';
+import Dashboard from './pages/Dashboard'
 import Login from './pages/auth/Login';
 import ResetPassword from './pages/auth/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -23,18 +25,22 @@ import CourseEdit from './pages/edit_pages/CourseEdit';
 import InstructorEdit from './pages/edit_pages/InstructorEdit';
 import DepartmentEdit from './pages/edit_pages/DepartmentEdit';
 
+// MySchedule
+import MySchedule from './pages/MySchedule';
+
 const router = createBrowserRouter([
-  { path: '/', element: <ProtectedRoute><App /></ProtectedRoute>},
+  { path: '/', element: <ProtectedRoute><Dashboard /></ProtectedRoute>},
   { path: '/login', element: <Login />},
   { path: '/reset_password', element: <ResetPassword />},
   { path: '/students', element: <ProtectedRoute><StudentList /></ProtectedRoute>},
-  { path: '/students/:id', element: <ProtectedRoute><StudentEdit /></ProtectedRoute>},
+  { path: '/students/:id', element: <ProtectedRoute allowedRoles={['admin']}><StudentEdit /></ProtectedRoute>},
   { path: '/courses', element: <ProtectedRoute><CourseList /></ProtectedRoute>},
-  { path: '/courses/:id', element: <ProtectedRoute><CourseEdit /></ProtectedRoute>},
+  { path: '/courses/:id', element: <ProtectedRoute allowedRoles={['admin']}><CourseEdit /></ProtectedRoute>},
   { path: '/instructors', element: <ProtectedRoute><InstructorList /></ProtectedRoute>},
-  { path: '/instructors/:id', element: <ProtectedRoute><InstructorEdit /></ProtectedRoute>},
+  { path: '/instructors/:id', element: <ProtectedRoute allowedRoles={['admin']}><InstructorEdit /></ProtectedRoute>},
   { path: '/departments', element: <ProtectedRoute><DepartmentList /></ProtectedRoute>},
-  { path: '/departments/:id', element: <ProtectedRoute><DepartmentEdit /></ProtectedRoute>}
+  { path: '/departments/:id', element: <ProtectedRoute allowedRoles={['admin']}><DepartmentEdit /></ProtectedRoute>},
+  { path: '/myschedule', element: <ProtectedRoute allowedRoles={['student', 'instructor']}><MySchedule /></ProtectedRoute>}
   // { path: '/dashboard'}
 ]);
 
@@ -42,7 +48,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>
 );
 

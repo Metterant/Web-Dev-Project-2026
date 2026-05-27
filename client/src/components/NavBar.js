@@ -1,8 +1,7 @@
 import React from "react";
 import "./NavBar.css";
-import { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { logout as apiLogout, getCurrentUser } from '../services/authClient';
+import { useUser } from '../context/UserContext';
 
 const navItems = [
   { label: "Dashboard", href: "/" },
@@ -10,26 +9,18 @@ const navItems = [
   { label: "Courses", href: "/courses" },
   { label: "Instructors", href: "/instructors" },
   { label: "Departments", href: "/departments" },
+  { label: "My Schedule", href: "/myschedule" },
 ];
 
 function NavBar() {
   const navigate = useNavigate();
-
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    let mounted = true;
-    getCurrentUser().then((u) => {
-      if (mounted) setUser(u);
-    });
-    return () => { mounted = false; };
-  }, []);
+  const { user, logout } = useUser();
 
   const hasRole = (...roles) => roles.includes(user?.role);
 
   const handleLogout = async () => {
     try {
-      await apiLogout();
+      await logout();
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {

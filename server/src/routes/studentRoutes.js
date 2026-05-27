@@ -9,7 +9,7 @@ router.use(authMiddleware);
 router.get('/search', controller.searchStudents)
 
 // GET requests hit /delete
-router.get('/delete/:id', controller.deleteStudentRecord)
+router.get('/delete/:id', allowedRoles(['admin']), controller.deleteStudentRecord)
 
 // GET requests hit /:id
 router.get('/:id', controller.getStudentRecord);

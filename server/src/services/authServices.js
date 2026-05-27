@@ -17,7 +17,13 @@ const login = async (username, password) => {
     if (!isMatch) throw new Error('Invalid username or password');
 
     const token = jwt.sign(
-        { userId: user.user_id, role: user.role },
+        { 
+            userId: user.user_id, 
+            username: user.username,
+            student_id: user.student_id,
+            instructor_id: user.instructor_id, 
+            role: user.role 
+        },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
     );
