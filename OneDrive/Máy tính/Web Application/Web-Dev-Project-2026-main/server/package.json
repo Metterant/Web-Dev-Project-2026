@@ -10,7 +10,6 @@
     "#dto/*": "./src/dto/*.js",
     "#middleware/*": "./src/middleware/*.js",
     "#Services/*": "./src/Services/*.js"
-
   },
   "version": "1.0.0",
   "description": "A webdev project that handles basic CRUD operations",
@@ -37,6 +36,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",

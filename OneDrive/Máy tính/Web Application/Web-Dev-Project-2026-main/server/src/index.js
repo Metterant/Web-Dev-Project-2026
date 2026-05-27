@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 const port = 5000;
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
+app.use(cookieParser()); // Add cookie parser middleware before routes that need it
 
 // Define a route for GET requests to the root URL
 app.get("/api", (req, res) => {

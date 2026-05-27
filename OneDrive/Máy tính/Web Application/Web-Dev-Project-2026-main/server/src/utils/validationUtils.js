@@ -34,7 +34,8 @@ function isValidStudentCode(codeString) {
 }
 
 function isValidInstructorCode(codeString) {
-  const regex = /^I[A-Z]*[0-9]{3,}$/; // Must start with 'F' followed by one or more characters and then at least 3 digits
+  if(!codeString) return false;
+  const regex = /^F[A-Z]*[0-9]{3,}$/; // Must start with 'F' followed by one or more characters and then at least 3 digits
   return regex.test(codeString);
 }
 

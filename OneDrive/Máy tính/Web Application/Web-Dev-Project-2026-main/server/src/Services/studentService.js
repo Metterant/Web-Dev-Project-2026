@@ -42,6 +42,9 @@ class StudentService {
   }
 
   static async deleteStudent(studentId) {
+    const student = await Student.findById(studentId);
+    if (!student) throw { status: 404, message: 'Student not found' };
+    
     const result = await Student.deleteById(studentId);
     if (!result || result.affectedRows === 0) throw { status: 404, message: 'Student not found' };
     return { message: 'Student Record deleted' };

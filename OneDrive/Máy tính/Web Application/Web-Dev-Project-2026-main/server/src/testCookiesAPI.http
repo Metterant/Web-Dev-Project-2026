@@ -1,0 +1,35 @@
+### Login as student - cookie set automatically
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "S001",
+    "password": "password123"
+}
+
+### login as instructor - cookie set automatically
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "F003",
+    "password": "password123"
+}
+
+### Login as admin - cookie set automatically
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "testAdmin1",
+    "password": "admin"
+}
+
+### Get All Courses - cookie sent automatically
+GET http://localhost:5000/api/courses
+
+### get all instructors - should fail without cookie
+GET http://localhost:5000/api/instructors
+
+### logout - clear cookie
+POST http://localhost:5000/api/auth/logout

@@ -12,7 +12,7 @@ router.get('/:id', authMiddleware, allowedRoles(['student', 'instructor', 'admin
 router.get('/', authMiddleware, allowedRoles(['student', 'instructor', 'admin']), controller.getAllCourses);
 
 //Instructor & Admin only can access these routes
-router.post('/create', authMiddleware, allowedRoles(['instructor', 'admin']), validateCreate, controller.createCourse);
+router.post('/', authMiddleware, allowedRoles(['instructor', 'admin']), validateCreate, controller.createCourse);
 router.put('/:id', authMiddleware, allowedRoles(['instructor', 'admin']), validateUpdate, controller.updateCourse);
 router.delete('/:id', authMiddleware, allowedRoles(['instructor', 'admin']), controller.deleteCourseRecord);
 
