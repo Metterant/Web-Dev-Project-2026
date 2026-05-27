@@ -7,13 +7,33 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'; 
 
 import App from './App';
-import Login from './pages/Auth/Login';
-import ResetPassword from './pages/Auth/ResetPassword';
+import Login from './pages/auth/Login';
+import ResetPassword from './pages/auth/ResetPassword';
+
+// Lists
+import StudentList from './pages/list_pages/StudentList';
+import CourseList from './pages/list_pages/CourseList';
+import InstructorList from './pages/list_pages/InstructorList';
+import DepartmentList from './pages/list_pages/DepartmentList';
+
+// Edits
+import StudentEdit from './pages/edit_pages/StudentEdit';
+import CourseEdit from './pages/edit_pages/CourseEdit';
+import InstructorEdit from './pages/edit_pages/InstructorEdit';
+import DepartmentEdit from './pages/edit_pages/DepartmentEdit';
 
 const router = createBrowserRouter([
   { path: '/', element: <App />},
   { path: '/login', element: <Login />},
-  { path: '/reset_password', element: <ResetPassword />}
+  { path: '/reset_password', element: <ResetPassword />},
+  { path: '/students', element: <StudentList />},
+  { path: '/students/:id', element: <StudentEdit />},
+  { path: '/courses', element: <CourseList />},
+  { path: '/courses/:id', element: <CourseEdit />},
+  { path: '/instructors', element: <InstructorList />},
+  { path: '/instructors/:id', element: <InstructorEdit />},
+  { path: '/departments', element: <DepartmentList />},
+  { path: '/departments/:id', element: <DepartmentEdit />}
   // { path: '/dashboard'}
 ]);
 

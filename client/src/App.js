@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import NavBar from "./components/NavBar";
+import MainContainer from "./MainContainer";
 
 // Following the BEM conventions
 
@@ -23,16 +23,13 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
-      <NavBar />
-      <main className="app-main">
-        {backendData && Array.isArray(backendData.tests) ? (
-          backendData.tests.map((test, i) => <p key={i}>{test}</p>)
-        ) : (
-          <p>Loading...</p>
-        )}
-      </main>
-    </div>
+    <MainContainer>
+      {backendData && Array.isArray(backendData.tests) ? (
+        backendData.tests.map((test, i) => <p key={i}>{test}</p>)
+      ) : (
+        <p>Loading...</p>
+      )}
+    </MainContainer>
   );
 }
 

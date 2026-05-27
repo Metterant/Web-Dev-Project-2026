@@ -1,12 +1,13 @@
 import React from "react";
 import "./NavBar.css";
+import { Link } from "react-router-dom";
 
 const navItems = [
-  { label: "Dashboard", href: "#dashboard" },
-  { label: "Students", href: "#students" },
-  { label: "Courses", href: "#courses" },
-  { label: "Instructors", href: "#instructors" },
-  { label: "Departments", href: "#departments" },
+  { label: "Dashboard", href: "/" },
+  { label: "Students", href: "/students" },
+  { label: "Courses", href: "/courses" },
+  { label: "Instructors", href: "/instructors" },
+  { label: "Departments", href: "/departments" },
 ];
 
 function NavBar() {
@@ -18,15 +19,15 @@ function NavBar() {
         </span>
         <div className="navbar__title">
           <span className="navbar__name">College Database</span>
-          <span className="navbar__tagline">Academic Operations</span>
+          {/* <span className="navbar__tagline">Academic Operations</span> */}
         </div>
       </div>
 
       <nav className="navbar__nav" aria-label="Primary">
         {navItems.map((item) => (
-          <a key={item.href} className="navbar__link" href={item.href}>
+          <Link key={item.href} className="navbar__link" to={item.href}>
             {item.label}
-          </a>
+          </Link>
         ))}
       </nav>
 

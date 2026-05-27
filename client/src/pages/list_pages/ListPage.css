@@ -1,0 +1,85 @@
+.list-table {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+    /* background-color: #ffffff; */
+    /* border: 1px solid #dddddd; */
+}
+
+.list-table table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Merges borders into a clean single line */
+    margin: 0;
+}
+
+.list-table thead {
+    background: #51c987;
+    background: linear-gradient(137deg, rgba(81, 201, 135, 1) 0%, rgba(30, 156, 150, 1) 100%);
+}
+
+.list-table th,
+.list-table td {
+    padding: 12px 15px;
+    /* Adds breathing room inside cells */
+    text-align: left;
+}
+
+.list-table th {
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+
+.sortable-header:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.pagination-controls button {
+    padding: 8px 14px;
+    min-width: 80px;
+    border: none;
+    border-radius: 8px;
+    background-color: #009879;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+    background-color: #a7a7a7;
+    cursor: not-allowed;
+}
+
+.list-table table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    background-color: #c9c3c3;
+    transition: 0.2s;
+    /* Zebra striping for better readability */
+}
+
+.list-table table tbody tr:nth-of-type(even) {
+    background-color: #dfdddd;
+    /* Zebra striping for better readability */
+}
+
+.list-table table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+    /* Bottom border to close the table */
+}
+
+.list-table table tbody tr:hover {
+    background-color: #ababab;
+    cursor: pointer;
+    /* Highlights row on mouse over */
+}

@@ -50,3 +50,21 @@
 .list-search-box-selects select:hover {
     cursor: pointer;
 }
+
+.list-search-box form button {
+    width: 100px;
+    background: rgb(81, 180, 81);
+    border: 0px;
+    border-radius: 10px;
+    transition: 0.2s;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+}
+
+.list-search-box form button:hover {
+    background: rgb(60, 151, 60);
+    border: 0px;
+    border-radius: 10px;
+    cursor: pointer;
+}

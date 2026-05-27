@@ -36,8 +36,8 @@ const Instructor = {
 
         const queryKeyword = `%${normalizedKeyword.toLowerCase()}%`;
         const [rows] = await db.query(
-            `SELECT instructor_id, instructor_code, first_name, last_name, email, department_id
-             FROM instructor
+            `SELECT instructor_id, instructor_code, first_name, last_name, email, department_name
+             FROM instructor_view
              WHERE
                 status = 'active' AND
                 (CONCAT_WS(' ', first_name, last_name) LIKE ? OR
