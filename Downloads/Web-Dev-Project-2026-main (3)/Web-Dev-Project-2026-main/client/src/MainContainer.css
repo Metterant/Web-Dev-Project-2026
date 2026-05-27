@@ -1,0 +1,21 @@
+.container {
+	min-height: 100vh;
+}
+
+.container-main {
+	padding: 12px 7vw 80px;
+	color: #1b120d;
+	display: grid;
+}
+
+.container-main p {
+	margin: 0;
+	font-size: 1.05rem;
+	color: #1f160f;
+}
+
+@media (max-width: 700px) {
+	.container-main {
+		padding: 32px 6vw 60px;
+	}
+}

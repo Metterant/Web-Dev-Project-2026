@@ -1,0 +1,20 @@
+.back-button {
+    font-size: large;
+    top: 0;
+    position: sticky;
+}
+
+.back-button button {
+    margin: 20px;
+    font-size: 20px;
+    transition: 0.2s;
+    border: none;
+    background: none;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.back-button button:hover{
+    margin: 20px;
+    transform: translateX(10px);
+    color: red;
+}
