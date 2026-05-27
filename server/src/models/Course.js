@@ -4,7 +4,7 @@ const { getOffset, PAGE_SIZE } = require('#utils/searchUtils');
 const Course = {
     getAll: async (page = 1) => {
         const [rows] = await db.query(
-            `SELECT course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period
+            `SELECT course_id, course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period
              FROM course_view WHERE status = 'active' ORDER BY department_id ASC LIMIT ? OFFSET ?`,
             [PAGE_SIZE, getOffset(page) || 0]
         );
@@ -12,7 +12,7 @@ const Course = {
     },
     findById: async (id) => {
         const [rows] = await db.query(
-            `SELECT course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period
+            `SELECT course_id, course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period
              FROM course_view WHERE course_id = ? AND status = 'active'`,
             [id]
         );
@@ -34,7 +34,7 @@ const Course = {
 
         const queryKeyword = `%${normalizedKeyword.toLowerCase()}%`;
         const [rows] = await db.query(
-            `SELECT course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period, enrollment_count
+            `SELECT course_id, course_code, course_name, credits, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period, enrollment_count
              FROM course_view
              WHERE status = 'active' AND (
                 course_code LIKE ? 

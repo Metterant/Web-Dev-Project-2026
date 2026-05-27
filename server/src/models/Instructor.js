@@ -5,7 +5,7 @@ const Instructor = {
     // Get all instructors
     getAll: async (page = 1) => {
         const [rows] = await db.query(
-            `SELECT instructor_code, first_name, last_name, email, department_name
+            `SELECT instructor_id, instructor_code, first_name, last_name, email, department_name
             FROM instructor_view WHERE status = 'active' ORDER BY instructor_id ASC LIMIT ? OFFSET ?`, [PAGE_SIZE, getOffset(page) || 0]);
         return rows;
     },
@@ -36,7 +36,7 @@ const Instructor = {
 
         const queryKeyword = `%${normalizedKeyword.toLowerCase()}%`;
         const [rows] = await db.query(
-            `SELECT instructor_code, first_name, last_name, email, department_id
+            `SELECT instructor_id, instructor_code, first_name, last_name, email, department_id
              FROM instructor
              WHERE
                 status = 'active' AND

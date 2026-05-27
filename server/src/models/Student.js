@@ -5,7 +5,7 @@ const Student = {
     // Get all students
     getAll: async (page = 1) => {
         const [rows] = await db.query(
-            `SELECT student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email 
+            `SELECT student_id, student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email 
             FROM student WHERE status = 'active' ORDER BY student_code ASC LIMIT ? OFFSET ?`, [PAGE_SIZE, getOffset(page) || 0]);
         return rows;
     },
@@ -13,7 +13,7 @@ const Student = {
     findById: async (id) => {
         // The ? prevents SQL injection attacks
         const [rows] = await db.query(
-            `SELECT student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email 
+            `SELECT student_id, student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email 
             FROM student WHERE student_id = ? AND status = 'active'`,
             [id]);
         return rows[0]; // Return the first matching user
@@ -36,7 +36,7 @@ const Student = {
 
         const queryKeyword = `%${normalizedKeyword.toLowerCase()}%`;
         const [rows] = await db.query(
-            `SELECT student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email
+            `SELECT student_id, student_code, first_name, last_name, DATE_FORMAT(dob, '%Y-%m-%d') AS dob, major, admission_year, email
              FROM student
              WHERE
                 status = 'active' AND
