@@ -151,8 +151,8 @@ export default function DepartmentList() {
                   title={`Click to navigate to Edit form for Department ${d.department_name}`}
                   >
                   <td>{d.department_name}</td>
-                  <td>{d.head ? `${d.head}` : ''}</td>
-                  <td>{d.course_count ?? ''}</td>
+                  <td>{d.ins_fname ? `${d.ins_fname} ${d.ins_lname}` : 'Unassigned'}</td>
+                  <td>{d.course_count ?? 0}</td>
                 </tr>
               ))}
             </tbody>

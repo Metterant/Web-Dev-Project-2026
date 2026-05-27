@@ -5,6 +5,7 @@ import './EditPage.css';
 
 const initialFormData = {
   department_name: '',
+  head_instructor_id: '',
 };
 
 export default function DepartmentEdit() {
@@ -23,8 +24,14 @@ export default function DepartmentEdit() {
         const resp = await fetch(`/api/departments/${id}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
-        setFormData({ department_name: data.department_name ?? '' });
-        setInitialData({ department_name: data.department_name ?? '' });
+        setFormData({
+          department_name: data.department_name ?? '',
+          head_instructor_id: data.head_instructor_id ?? '',
+        });
+        setInitialData({
+          department_name: data.department_name ?? '',
+          head_instructor_id: data.head_instructor_id ?? '',
+        });
       } catch (err) {
         console.error('Failed to load department:', err);
         setError('Failed to load department.');
@@ -50,7 +57,10 @@ export default function DepartmentEdit() {
       const resp = await fetch(`/api/departments/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          head_instructor_id: formData.head_instructor_id === '' ? null : Number(formData.head_instructor_id),
+        }),
       });
       if (!resp.ok) {
         const p = await resp.json().catch(() => ({}));
@@ -105,6 +115,11 @@ export default function DepartmentEdit() {
               <div className='form-group'>
                 <label htmlFor='department_name'>Department Name</label>
                 <input id='department_name' name='department_name' value={formData.department_name} onChange={handleChange} required autoFocus />
+              </div>
+
+              <div className='form-group'>
+                <label htmlFor='head_instructor_id'>Head Instructor ID</label>
+                <input id='head_instructor_id' name='head_instructor_id' type='number' min='1' value={formData.head_instructor_id} onChange={handleChange} />
               </div>
 
               {error ? <p className='edit-error'>{error}</p> : null}

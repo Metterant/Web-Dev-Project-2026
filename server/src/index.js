@@ -5,6 +5,7 @@ const port = 5000;
 const studentRoutes = require('#routes/studentRoutes');
 const InstructorRoutes = require('#routes/instructorRoutes');
 const courseRoutes = require('#routes/courseRoutes');
+const departmentRoutes = require('#routes/departmentRoutes');
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -29,6 +30,9 @@ app.use("/api/instructors", InstructorRoutes);
 
 // Define a route for requests to /courses
 app.use("/api/courses", courseRoutes);
+
+// Define a route for requests to /departments
+app.use("/api/departments", departmentRoutes);
 
 // Start the server
 app.listen(port, () => {
