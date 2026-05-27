@@ -98,10 +98,9 @@ const Instructor = {
             WHERE instructor_id = ?
                 AND assignment_status = 'active'
                 AND course_status = 'active'
-                AND semester = ?
             ORDER BY day_of_week, start_period, course_code
             LIMIT ? OFFSET ?`,
-            [instructor_id, semester, PAGE_SIZE, getOffset(page) || 0]
+            [instructor_id, PAGE_SIZE, getOffset(page) || 0]
         );
         return rows;
     }

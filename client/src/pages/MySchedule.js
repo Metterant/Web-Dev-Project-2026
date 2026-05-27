@@ -60,7 +60,7 @@ export default function MySchedule({ startHour = 8, endHour = 18, days = ['Mon',
       if (user?.role === 'student')
         fetchUrl = `/api/students/${user.student_id}/schedule?${params.toString()}`;
       else if (user?.role === 'instructor')
-        fetchUrl = `/api/instructors/${user.instructor_id}/schedule${params.toString()}`;
+        fetchUrl = `/api/instructors/${user.instructor_id}/schedule`;
       else return;
 
       const response = await apiFetch(fetchUrl);
