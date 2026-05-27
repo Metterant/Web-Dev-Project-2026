@@ -2,30 +2,13 @@ import MainContainer from '../../MainContainer';
 import './ListPage.css';
 import '../../App.css'
 import SearchBox from '../../components/SearchBox';
+import { apiFetch } from '../../services/apiClient';
 
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 20;
 const ALLOWED_SORT_COLUMNS = ['course_code', 'course_name', 'credits', 'department_id', 'day_of_week', 'start_period', 'end_period'];
-
-const getPageFromParams = (params) => {
-  const value = Number.parseInt(params.get('page') || '1', 10);
-  return Number.isNaN(value) || value < 1 ? 1 : value;
-};
-
-const getSortFromParams = (params) => {
-  const value = params.get('sort') || 'student_code';
-  return ALLOWED_SORT_COLUMNS.includes(value) ? value : 'student_code';
-};
-
-const getOrderFromParams = (params) => {
-  return params.get('order') === 'DESC' ? 'DESC' : 'ASC';
-};
-
-const getKeywordFromParams = (params) => {
-  return params.get('keyword') ?? '';
-};
 
 const courseGetPageFromParams = (params) => {
   const value = Number.parseInt(params.get('page') || '1', 10);
@@ -54,12 +37,12 @@ export default function CourseList() {
   const loadCourses = useCallback(async () => {
     try {
       const params = new URLSearchParams({
-        keyword: getKeywordFromParams(searchParams),
-        page: String(getPageFromParams(searchParams)),
-        sort: getSortFromParams(searchParams),
-        order: getOrderFromParams(searchParams),
+        keyword: courseGetKeywordFromParams(searchParams),
+        page: String(courseGetPageFromParams(searchParams)),
+        sort: courseGetSortFromParams(searchParams),
+        order: courseGetOrderFromParams(searchParams),
       });
-      const response = await fetch(`/api/courses/search?${params.toString()}`);
+      const response = await apiFetch(`/api/courses/search?${params.toString()}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const data = await response.json();
@@ -110,8 +93,8 @@ export default function CourseList() {
 
     nextParams.set('keyword', nextKeyword);
     nextParams.set('page', '1');
-    nextParams.set('sort', getSortFromParams(searchParams));
-    nextParams.set('order', getOrderFromParams(searchParams));
+    nextParams.set('sort', courseGetSortFromParams(searchParams));
+    nextParams.set('order', courseGetOrderFromParams(searchParams));
 
     setSearchParams(nextParams);
   }
@@ -120,26 +103,10 @@ export default function CourseList() {
     return Array.isArray(backendData) && backendData.length > 0;
   }
 
-  const handleDelete = async (courseId) => {
-    try {
-      const resp = await fetch(`/api/courses/delete/${courseId}`);
-      if (!resp.ok) {
-        const body = await resp.json().catch(() => ({}));
-        throw new Error(body.message || `HTTP ${resp.status}`);
-      }
-
-      await loadCourses();
-      alert('Course record deleted');
-    } catch (err) {
-      console.error('Delete failed:', err);
-      alert(`Delete failed: ${err.message}`);
-    }
-  }
-
   const handleSort = (column) => {
     const nextParams = new URLSearchParams(searchParams);
-    const currentSort = getSortFromParams(searchParams);
-    const currentOrder = getOrderFromParams(searchParams);
+    const currentSort = courseGetSortFromParams(searchParams);
+    const currentOrder = courseGetOrderFromParams(searchParams);
 
     nextParams.set('page', '1');
 
@@ -155,8 +122,8 @@ export default function CourseList() {
   };
 
   const getSortIndicator = (column) => {
-    if (getSortFromParams(searchParams) !== column) return '';
-    return getOrderFromParams(searchParams) === 'ASC' ? ' ▲' : ' ▼';
+    if (courseGetSortFromParams(searchParams) !== column) return '';
+    return courseGetOrderFromParams(searchParams) === 'ASC' ? ' ▲' : ' ▼';
   };
 
   return (
@@ -210,15 +177,15 @@ export default function CourseList() {
       <div className='pagination-controls'>
         <button type='button' onClick={() => {
           const nextParams = new URLSearchParams(searchParams);
-          nextParams.set('page', String(Math.max(1, getPageFromParams(searchParams) - 1)));
+          nextParams.set('page', String(Math.max(1, courseGetPageFromParams(searchParams) - 1)));
           setSearchParams(nextParams);
-        }} disabled={getPageFromParams(searchParams) === 1}>
+        }} disabled={courseGetPageFromParams(searchParams) === 1}>
           Previous
         </button>
-        <span>Page {getPageFromParams(searchParams)}</span>
+        <span>Page {courseGetPageFromParams(searchParams)}</span>
         <button type='button' onClick={() => {
           const nextParams = new URLSearchParams(searchParams);
-          nextParams.set('page', String(getPageFromParams(searchParams) + 1));
+          nextParams.set('page', String(courseGetPageFromParams(searchParams) + 1));
           setSearchParams(nextParams);
         }} disabled={!hasNextPage}>
           Next

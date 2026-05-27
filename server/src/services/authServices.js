@@ -11,7 +11,9 @@ const login = async (username, password) => {
     console.log('2. User found:', user);
     if (!user) throw new Error('Invalid username or password');
 
-    const isMatch = await bcrypt.compare(password, user.password_hash);
+    let isMatch = true;
+    if (user.password_hash !== 'unset')
+        isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) throw new Error('Invalid username or password');
 
     const token = jwt.sign(

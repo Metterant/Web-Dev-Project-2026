@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import MainContainer from "./MainContainer";
+import { apiFetch } from "./services/apiClient";
 
 // Following the BEM conventions
 
@@ -9,7 +10,7 @@ function App() {
 
   useEffect(() => {
     try {
-      fetch("/api")
+      apiFetch("/api")
         .then((response) => {
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           return response.json();

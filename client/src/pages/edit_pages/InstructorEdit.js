@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import './EditPage.css';
+import { apiFetch } from '../../services/apiClient';
 
 const initialFormData = {
   instructor_code: '',
@@ -24,7 +25,7 @@ export default function InstructorEdit() {
   useEffect(() => {
     const load = async () => {
       try {
-        const resp = await fetch(`/api/instructors/${id}`);
+        const resp = await apiFetch(`/api/instructors/${id}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         setFormData({
@@ -63,7 +64,7 @@ export default function InstructorEdit() {
     setError('');
 
     try {
-      const resp = await fetch(`/api/instructors/${id}`, {
+      const resp = await apiFetch(`/api/instructors/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData }),
@@ -93,7 +94,7 @@ export default function InstructorEdit() {
     setError('');
 
     try {
-      const resp = await fetch(`/api/instructors/delete/${id}`);
+      const resp = await apiFetch(`/api/instructors/delete/${id}`);
       if (!resp.ok) {
         const p = await resp.json().catch(() => ({}));
         throw new Error(p.message || `HTTP ${resp.status}`);

@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const port = 5000;
+const cookieParser = require('cookie-parser');
 
 const studentRoutes = require('#routes/studentRoutes');
 const InstructorRoutes = require('#routes/instructorRoutes');
 const courseRoutes = require('#routes/courseRoutes');
 const departmentRoutes = require('#routes/departmentRoutes');
+const authRoutes = require('#routes/authRoutes');
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -15,6 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Define a route for GET requests to the root URL
@@ -33,6 +36,8 @@ app.use("/api/courses", courseRoutes);
 
 // Define a route for requests to /departments
 app.use("/api/departments", departmentRoutes);
+
+app.use("/api/auth", authRoutes);
 
 // Start the server
 app.listen(port, () => {

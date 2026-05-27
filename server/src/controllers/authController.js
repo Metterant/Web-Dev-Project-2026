@@ -1,9 +1,15 @@
-const authService = require('../Services/authService');
+const authService = require('../services/authServices');
 
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
         const token = await authService.login(username, password);
+
+        res.cookie('token', token, { httpOnly: true,
+                                     secure: false, 
+                                     maxAge: 3600000}); // 1 hour
+
+
         return res.status(200).json({ token });
     } catch (error) {
         if (error.message === 'User not found') {
@@ -16,3 +22,8 @@ exports.login = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };  
+
+exports.logout = (req, res) => {
+    res.clearCookie('token');
+    return res.status(200).json({ message: 'Logged out successfully' });
+};

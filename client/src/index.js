@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import Login from './pages/auth/Login';
 import ResetPassword from './pages/auth/ResetPassword';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Lists
 import StudentList from './pages/list_pages/StudentList';
@@ -23,17 +24,17 @@ import InstructorEdit from './pages/edit_pages/InstructorEdit';
 import DepartmentEdit from './pages/edit_pages/DepartmentEdit';
 
 const router = createBrowserRouter([
-  { path: '/', element: <App />},
+  { path: '/', element: <ProtectedRoute><App /></ProtectedRoute>},
   { path: '/login', element: <Login />},
   { path: '/reset_password', element: <ResetPassword />},
-  { path: '/students', element: <StudentList />},
-  { path: '/students/:id', element: <StudentEdit />},
-  { path: '/courses', element: <CourseList />},
-  { path: '/courses/:id', element: <CourseEdit />},
-  { path: '/instructors', element: <InstructorList />},
-  { path: '/instructors/:id', element: <InstructorEdit />},
-  { path: '/departments', element: <DepartmentList />},
-  { path: '/departments/:id', element: <DepartmentEdit />}
+  { path: '/students', element: <ProtectedRoute><StudentList /></ProtectedRoute>},
+  { path: '/students/:id', element: <ProtectedRoute><StudentEdit /></ProtectedRoute>},
+  { path: '/courses', element: <ProtectedRoute><CourseList /></ProtectedRoute>},
+  { path: '/courses/:id', element: <ProtectedRoute><CourseEdit /></ProtectedRoute>},
+  { path: '/instructors', element: <ProtectedRoute><InstructorList /></ProtectedRoute>},
+  { path: '/instructors/:id', element: <ProtectedRoute><InstructorEdit /></ProtectedRoute>},
+  { path: '/departments', element: <ProtectedRoute><DepartmentList /></ProtectedRoute>},
+  { path: '/departments/:id', element: <ProtectedRoute><DepartmentEdit /></ProtectedRoute>}
   // { path: '/dashboard'}
 ]);
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import './EditPage.css';
+import { apiFetch } from '../../services/apiClient';
 
 const initialFormData = {
   student_code: '',
@@ -26,7 +27,7 @@ export default function StudentEdit() {
   useEffect(() => {
     const loadStudent = async () => {
       try {
-        const response = await fetch(`/api/students/${id}`);
+        const response = await apiFetch(`/api/students/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }
@@ -75,7 +76,7 @@ export default function StudentEdit() {
     setError('');
 
     try {
-      const response = await fetch(`/api/students/${id}`, {
+      const response = await apiFetch(`/api/students/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ export default function StudentEdit() {
     setError('');
 
     try {
-      const response = await fetch(`/api/students/delete/${id}`);
+      const response = await apiFetch(`/api/students/delete/${id}`);
       if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
         throw new Error(payload.message || `HTTP ${response.status}`);

@@ -1,6 +1,7 @@
 import React from "react";
 import "./NavBar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { apiFetch, clearAuthToken } from "../services/apiClient";
 
 const navItems = [
   { label: "Dashboard", href: "/" },
@@ -11,6 +12,19 @@ const navItems = [
 ];
 
 function NavBar() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      clearAuthToken();
+      navigate('/login', { replace: true });
+    }
+  };
+
   return (
     <header className="navbar">
       <div className="navbar__brand">
@@ -42,7 +56,7 @@ function NavBar() {
       </div>
 
       <div className="navbar__actions">
-        <button className="navbar__button--logout" type="button">
+        <button className="navbar__button--logout" type="button" onClick={handleLogout}>
           Log out
         </button>
       </div>

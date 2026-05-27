@@ -2,6 +2,7 @@ import MainContainer from '../../MainContainer';
 import './ListPage.css';
 import '../../App.css'
 import SearchBox from '../../components/SearchBox';
+import { apiFetch } from '../../services/apiClient';
 
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -41,7 +42,7 @@ export default function DepartmentList() {
         sort: deptGetSortFromParams(searchParams),
         order: deptGetOrderFromParams(searchParams),
       });
-      const response = await fetch(`/api/departments/search?${params.toString()}`);
+      const response = await apiFetch(`/api/departments/search?${params.toString()}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const data = await response.json();

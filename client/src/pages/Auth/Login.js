@@ -1,36 +1,80 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { apiFetch, setAuthToken } from '../../services/apiClient';
 import './Login.css';
 
 export default function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const fromPath = location.state?.from?.pathname || '/';
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await apiFetch('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.message || `HTTP ${response.status}`);
+      }
+
+      const payload = await response.json();
+      setAuthToken(payload.token);
+      navigate(fromPath, { replace: true });
+    } catch (err) {
+      setError(err.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className='login'>
       <div className='login-container'>
         <h1>Welcome back!</h1>
-        <form action={'#logged'} method='post'>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <input type="text"
               id="username"
               name="username"
               placeholder="Enter your username"
               required
-              autofocus>
-            </input>
+              autoFocus
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
           </div>
 
           <div className="form-group">
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input type="password"
               id="password"
               name="password"
               placeholder="Enter your password"
-              required>
-            </input>
+              // required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)} />
           </div>
 
-          <Link style={{"text-decoration" : "none" }} to={"/reset_password"}>Forgot Password?</Link>
+          {error ? <p className='login-error'>{error}</p> : null}
 
-          <button className='login-container__button'>Log in</button>
+          <Link style={{ textDecoration: 'none' }} to={'/reset_password'}>Forgot Password?</Link>
+
+          <button className='login-container__button' type='submit' disabled={loading}>
+            {loading ? 'Logging in...' : 'Log in'}
+          </button>
         </form>
       </div>
     </div>

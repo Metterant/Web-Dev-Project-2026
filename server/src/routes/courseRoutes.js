@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/courseController');
+const { authMiddleware, allowedRoles } = require('#middlewares/authMiddlewares');
+
+router.use(authMiddleware);
 
 // GET requests hit /search
 router.get('/search', controller.searchCourses);
@@ -18,9 +21,9 @@ router.get('/:id/students', controller.getStudents);
 router.get('/', controller.getAllCourses);
 
 // POST requests hit / (root)
-router.post('/', controller.createCourse);
+router.post('/', allowedRoles(['admin']), controller.createCourse);
 
 // PUT requests hit /:id
-router.put('/:id', controller.updateCourse);
+router.put('/:id', allowedRoles(['admin']), controller.updateCourse);
 
 module.exports = router;
