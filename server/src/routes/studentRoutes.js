@@ -6,10 +6,10 @@ const { authMiddleware, allowedRoles } = require('#middlewares/authMiddlewares')
 router.use(authMiddleware);
 
 // GET requests hit /search
-router.get('/search', controller.searchStudents)
+router.get('/search', allowedRoles(['admin', 'instructor']), controller.searchStudents);
 
 // GET requests hit /delete
-router.get('/delete/:id', allowedRoles(['admin']), controller.deleteStudentRecord)
+router.get('/delete/:id', allowedRoles(['admin']), controller.deleteStudentRecord);
 
 // GET requests hit /:id
 router.get('/:id', controller.getStudentRecord);
@@ -21,7 +21,7 @@ router.get('/:id/courses', controller.getCourses);
 router.get('/:id/schedule', controller.getSchedule);
 
 // GET requests hit / (root)
-router.get('/', controller.getAllStudents);
+router.get('/', allowedRoles(['admin', 'instructor']), controller.getAllStudents);
 
 // POST requests hit / (root)
 router.post('/', allowedRoles(['admin']), controller.createStudent)

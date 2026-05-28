@@ -6,14 +6,14 @@ import { useNavigate, useLocation, useParams, Navigate } from 'react-router-dom'
 
 import { useEffect, useState, useCallback } from 'react';
 
-export default function InstructorCourse() {
+export default function InstructorCourses() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, loading } = useUser();
   const [backendData, setBackendData] = useState(null);
   // Ownership-authorization
-  const canAccessRoute = (user?.role === 'admin') || (user?.role === 'instructor' && String(user?.instructor) === String(id));
+  const canAccessRoute = (user?.role === 'admin') || (user?.role === 'instructor' && String(user?.instructor_id) === String(id));
 
   const loadCourses = useCallback(async () => {
     try {

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   { path: '/', element: <ProtectedRoute><Dashboard /></ProtectedRoute>},
   { path: '/login', element: <Login />},
   { path: '/reset_password', element: <ResetPassword />},
-  { path: '/students', element: <ProtectedRoute><StudentList /></ProtectedRoute>},
+  { path: '/students', element: <ProtectedRoute allowedRoles={['admin', 'instructor']}><StudentList /></ProtectedRoute>},
   { path: '/students/:id', element: <ProtectedRoute allowedRoles={['admin']}><StudentEdit /></ProtectedRoute>},
   { path: '/students/:id/courses', element: <ProtectedRoute allowedRoles={['admin', 'student']}><ViewCourses /></ProtectedRoute>},
   { path: '/courses', element: <ProtectedRoute><CourseList /></ProtectedRoute>},

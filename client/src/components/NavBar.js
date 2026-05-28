@@ -5,9 +5,9 @@ import { useUser } from '../context/UserContext';
 
 const navItems = [
   { label: "Dashboard", href: "/" },
-  { label: "Students", href: "/students" },
-  { label: "Courses", href: "/courses" },
+  // { label: "Students", href: "/students" },
   { label: "Instructors", href: "/instructors" },
+  { label: "Courses", href: "/courses" },
   { label: "Departments", href: "/departments" },
 ];
 
@@ -16,6 +16,10 @@ function NavBar() {
   const { user, logout } = useUser();
 
   const hasRole = (...roles) => roles.includes(user?.role);
+
+  const studentsHref = hasRole('instructor', 'admin') ? '/students'
+    : null;
+
   const myCoursesHref = user?.role === 'student' && user?.student_id
     ? `/students/${user.student_id}/courses`
     : user?.role === 'instructor' && user?.instructor_id
@@ -27,6 +31,7 @@ function NavBar() {
     : null;
 
   const visibleNavItems = [
+    ...(studentsHref ? [{ label: "Students", href: myCoursesHref }] : []),
     ...navItems,
     ...(myCoursesHref ? [{ label: "My Courses", href: myCoursesHref }] : []),
     ...(myScheduleHref ? [{ label: "My Schedule", href: myScheduleHref }] : []),

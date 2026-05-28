@@ -4,7 +4,6 @@ import "./Dashboard.css";
 import { useUser } from "../context/UserContext";
 
 const baseQuickLinks = [
-  { to: "/students", emoji: "🧑‍🎓", label: "Students" },
   { to: "/courses", emoji: "📚", label: "Courses" },
   { to: "/instructors", emoji: "🧑‍🏫", label: "Instructors" },
   { to: "/departments", emoji: "🏛️", label: "Departments" },
@@ -12,6 +11,7 @@ const baseQuickLinks = [
 
 export default function Dashboard() {
   const { user } = useUser();
+  const studentsLink = { to: "/students", emoji: "🧑‍🎓", label: "Students" };
 
   const myCoursesLink = user?.role === 'student' && user?.student_id
     ? `/students/${user.student_id}/courses`
@@ -24,13 +24,17 @@ export default function Dashboard() {
   if (user?.role !== 'admin') {
     roleSpecificLinks.push({ to: "/myschedule", emoji: "🗓️", label: "My Schedule" });
   }
-
+  
   if (myCoursesLink) {
     roleSpecificLinks.push({ to: myCoursesLink, emoji: "📘", label: "My Courses" });
   }
 
   const quickLinks = [...baseQuickLinks, ...roleSpecificLinks];
-
+  
+  if (user?.role === 'admin' || user?.role === 'instructor') {
+    roleSpecificLinks.unshift(studentsLink);
+  }
+  
   return (
     <MainContainer>
       <h1>Welcome!</h1>

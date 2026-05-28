@@ -1,7 +1,8 @@
+import './EditPage.css';
+import BackButton from '../../components/BackButton';
+import CoursesButton from '../../components/CoursesButton'
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import BackButton from '../../components/BackButton';
-import './EditPage.css';
 import { apiFetch } from '../../services/apiClient';
 
 const initialFormData = {
@@ -110,7 +111,11 @@ export default function InstructorEdit() {
 
   return (
     <>
-      <BackButton previous_screen='/instructors' />
+      <div className='top-buttons'>
+        <BackButton previous_screen='/instructors' />
+        <CoursesButton courses_screen={`/instructors/${id}/courses`} />
+      </div>
+      
       <div className='edit'>
         <div className='edit-container'>
           <h2>Edit Instructor</h2>

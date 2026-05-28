@@ -10,6 +10,14 @@
   /* background: linear-gradient(135deg, #edf7ef 0%, #f7fbff 100%); */
 }
 
+.top-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  top: 0;
+  position: sticky;
+}
+
 .edit-container {
   width: min(600px, 100%);
   display: flex;

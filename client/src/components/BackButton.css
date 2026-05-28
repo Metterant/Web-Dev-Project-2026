@@ -2,6 +2,9 @@
     font-size: large;
     top: 0;
     position: sticky;
+    flex-grow: 1;
+    width: 50%;
+    box-sizing: border-box;
 }
 
 .back-button button {
@@ -13,7 +16,7 @@
     transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.back-button button:hover{
+.back-button button:hover {
     margin: 20px;
     transform: translateX(10px);
     color: red;
