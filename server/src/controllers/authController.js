@@ -33,3 +33,31 @@ exports.logout = (req, res) => {
     res.clearCookie('token');
     return res.status(200).json({ message: 'Logged out successfully' });
 };
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const { username, password, confirmPassword } = req.body;
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
+
+        const result = await authService.resetPassword(username, password);
+        return res.status(200).json({ message: 'Password reset successfully', user: result });
+    } catch (error) {
+        if (error.message === 'Username and password are required') {
+            return res.status(400).json({ message: error.message });
+        }
+
+        if (error.message === 'User not found') {
+            return res.status(404).json({ message: error.message });
+        }
+
+        if (error.message === 'Password reset failed') {
+            return res.status(500).json({ message: error.message });
+        }
+
+        console.error('Password reset error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};

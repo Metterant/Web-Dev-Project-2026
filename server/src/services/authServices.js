@@ -31,4 +31,24 @@ const login = async (username, password) => {
     return { token, user: { userId: user.user_id, role: user.role } };
 };
 
-module.exports = { login };
+const resetPassword = async (username, password) => {
+    if (!username || !password) {
+        throw new Error('Username and password are required');
+    }
+
+    const user = await User.findByUsername(username);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const updatedRows = await User.updatePasswordByUsername(username, passwordHash);
+
+    if (!updatedRows) {
+        throw new Error('Password reset failed');
+    }
+
+    return { username: user.username };
+};
+
+module.exports = { login, resetPassword };
