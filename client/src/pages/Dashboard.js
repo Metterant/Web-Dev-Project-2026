@@ -32,7 +32,7 @@ export default function Dashboard() {
   const quickLinks = [...baseQuickLinks, ...roleSpecificLinks];
   
   if (user?.role === 'admin' || user?.role === 'instructor') {
-    roleSpecificLinks.unshift(studentsLink);
+    quickLinks.unshift(studentsLink);
   }
   
   return (
