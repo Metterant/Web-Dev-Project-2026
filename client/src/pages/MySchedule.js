@@ -47,7 +47,7 @@ export default function MySchedule({ startHour = 8, endHour = 18, days = ['Mon',
     return () => { mounted = false; };
   }, []);
 
-  const loadCourses = useCallback(async () => {
+  const loadSchedule = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
@@ -90,8 +90,8 @@ export default function MySchedule({ startHour = 8, endHour = 18, days = ['Mon',
       return;
     }
 
-    loadCourses();
-  }, [searchParams, setSearchParams, loadCourses]);
+    loadSchedule();
+  }, [searchParams, setSearchParams, loadSchedule]);
 
   return (
     <MainContainer>
@@ -150,7 +150,7 @@ export default function MySchedule({ startHour = 8, endHour = 18, days = ['Mon',
                   key={c.course_id}
                   className="course-block"
                   style={style}
-                  title={`${c.course_name || c.title} (${c.start_period}:00–${c.end_period}:00)`}
+                  title={`${c.course_name || c.title} (${startHour + c.start_period - 1}:00–${startHour + c.end_period - 1}:00)`}
                 >
                   <div className="course-title">{c.course_name || c.title}</div>
                   <div className="course-meta">

@@ -105,7 +105,7 @@ const getCourses = async (req, res) => {
     if (error.status) 
       return res.status(error.status).json({ message: error.message });
     console.error(error);
-    return res.status(400).json({ message: "Student update failed" })
+    return res.status(400).json({ message: "Student courses failed" })
   }
 };
 
@@ -123,7 +123,7 @@ const getSchedule = async (req, res) => {
     if (error.status)
       return res.status(error.status).json({ message: error.message });
     console.error(error);
-    return res.status(400).json({ message: "Student schedule failed" });
+    return res.status(500).json(serverMessages[500]);
   }
 };
 

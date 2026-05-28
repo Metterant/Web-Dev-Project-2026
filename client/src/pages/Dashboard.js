@@ -1,16 +1,36 @@
 import { Link } from "react-router-dom";
 import MainContainer from "../MainContainer";
 import "./Dashboard.css";
+import { useUser } from "../context/UserContext";
 
-const quickLinks = [
+const baseQuickLinks = [
   { to: "/students", emoji: "🧑‍🎓", label: "Students" },
   { to: "/courses", emoji: "📚", label: "Courses" },
   { to: "/instructors", emoji: "🧑‍🏫", label: "Instructors" },
   { to: "/departments", emoji: "🏛️", label: "Departments" },
-  { to: "/myschedule", emoji: "🗓️", label: "My Schedule" },
 ];
 
 export default function Dashboard() {
+  const { user } = useUser();
+
+  const myCoursesLink = user?.role === 'student' && user?.student_id
+    ? `/students/${user.student_id}/courses`
+    : user?.role === 'instructor' && user?.instructor_id
+      ? `/instructors/${user.instructor_id}/courses`
+      : null;
+
+  const roleSpecificLinks = [];
+
+  if (user?.role !== 'admin') {
+    roleSpecificLinks.push({ to: "/myschedule", emoji: "🗓️", label: "My Schedule" });
+  }
+
+  if (myCoursesLink) {
+    roleSpecificLinks.push({ to: myCoursesLink, emoji: "📘", label: "My Courses" });
+  }
+
+  const quickLinks = [...baseQuickLinks, ...roleSpecificLinks];
+
   return (
     <MainContainer>
       <h1>Welcome!</h1>

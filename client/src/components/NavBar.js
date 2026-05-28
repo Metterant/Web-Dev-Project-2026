@@ -9,7 +9,6 @@ const navItems = [
   { label: "Courses", href: "/courses" },
   { label: "Instructors", href: "/instructors" },
   { label: "Departments", href: "/departments" },
-  { label: "My Schedule", href: "/myschedule" },
 ];
 
 function NavBar() {
@@ -17,6 +16,21 @@ function NavBar() {
   const { user, logout } = useUser();
 
   const hasRole = (...roles) => roles.includes(user?.role);
+  const myCoursesHref = user?.role === 'student' && user?.student_id
+    ? `/students/${user.student_id}/courses`
+    : user?.role === 'instructor' && user?.instructor_id
+      ? `/instructors/${user.instructor_id}/courses`
+      : null;
+
+  const myScheduleHref = user?.role === 'student' || user?.role === 'instructor'
+    ? '/myschedule'
+    : null;
+
+  const visibleNavItems = [
+    ...navItems,
+    ...(myCoursesHref ? [{ label: "My Courses", href: myCoursesHref }] : []),
+    ...(myScheduleHref ? [{ label: "My Schedule", href: myScheduleHref }] : []),
+  ];
 
   const handleLogout = async () => {
     try {
@@ -41,7 +55,7 @@ function NavBar() {
       </div>
 
       <nav className="navbar__nav" aria-label="Primary">
-        {navItems.map((item) => (
+        {visibleNavItems.map((item) => (
           <Link key={item.href} className="navbar__link" to={item.href}>
             {item.label}
           </Link>

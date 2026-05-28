@@ -82,26 +82,22 @@ const Student = {
         return result;
     },
     // Get student courses
-    getCourses: async (student_id, semester, page = 1) => {
+    getCourses: async (student_id) => {
         const [courses] = await db.query(`
-            SELECT c.course_id, c.course_code, c.course_name, c.credits, semester
-            FROM enrollment e
-            JOIN course c ON c.course_id = e.course_id
-            LEFT JOIN course_instructor ci ON c.course_id = ci.course_id AND ci.status = 'active'
-            WHERE e.student_id = ?
-                AND e.semester LIKE ?
-                AND e.status = 'active'
-                AND c.status = 'active'
-            ORDER BY c.course_code
-            LIMIT ? OFFSET ?;
+            SELECT enrollment_id, course_code, course_name, semester, grade, credits 
+            FROM enrollment e 
+                JOIN course_instructor ci ON e.course_instructor_id = ci.course_instructor_id
+                JOIN course c ON ci.course_id = c.course_id
+            WHERE student_id = ?
+            ORDER BY semester;
             `,
-            [student_id, `%${semester}%`, PAGE_SIZE, getOffset(page) || 0]
+            [student_id]
         );
         return courses;
     },
     getSchedule: async (student_id, semester = '', page = 1) => {
         const [rows] = await db.query(
-             `SELECT course_id, course_code, course_name, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period, semester, day_of_week, grade, enrollment_status, course_status
+            `SELECT course_id, course_code, course_name, department_name, instructor_code, ins_fname, ins_lname, start_period, end_period, semester, day_of_week, grade, enrollment_status, course_status
              FROM student_schedule_view
              WHERE student_id = ?
                AND semester = ?

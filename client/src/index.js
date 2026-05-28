@@ -27,6 +27,7 @@ import DepartmentEdit from './pages/edit_pages/DepartmentEdit';
 
 // MySchedule
 import MySchedule from './pages/MySchedule';
+import ViewCourses from './pages/ViewCourses';
 
 const router = createBrowserRouter([
   { path: '/', element: <ProtectedRoute><Dashboard /></ProtectedRoute>},
@@ -34,10 +35,12 @@ const router = createBrowserRouter([
   { path: '/reset_password', element: <ResetPassword />},
   { path: '/students', element: <ProtectedRoute><StudentList /></ProtectedRoute>},
   { path: '/students/:id', element: <ProtectedRoute allowedRoles={['admin']}><StudentEdit /></ProtectedRoute>},
+  { path: '/students/:id/courses', element: <ProtectedRoute allowedRoles={['admin', 'student']}><ViewCourses /></ProtectedRoute>},
   { path: '/courses', element: <ProtectedRoute><CourseList /></ProtectedRoute>},
   { path: '/courses/:id', element: <ProtectedRoute allowedRoles={['admin']}><CourseEdit /></ProtectedRoute>},
   { path: '/instructors', element: <ProtectedRoute><InstructorList /></ProtectedRoute>},
   { path: '/instructors/:id', element: <ProtectedRoute allowedRoles={['admin']}><InstructorEdit /></ProtectedRoute>},
+  { path: '/instructors/:id/courses', element: <ProtectedRoute allowedRoles={['admin', 'instructor']}><ViewCourses /></ProtectedRoute>},
   { path: '/departments', element: <ProtectedRoute><DepartmentList /></ProtectedRoute>},
   { path: '/departments/:id', element: <ProtectedRoute allowedRoles={['admin']}><DepartmentEdit /></ProtectedRoute>},
   { path: '/myschedule', element: <ProtectedRoute allowedRoles={['student', 'instructor']}><MySchedule /></ProtectedRoute>}

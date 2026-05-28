@@ -61,7 +61,7 @@
 
 .navbar__nav {
   display: flex;
-  gap: 18px;
+  gap: 12px;
   flex: 1;
   justify-content: center;
   flex-wrap: wrap;
