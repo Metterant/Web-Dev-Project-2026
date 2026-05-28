@@ -20,14 +20,14 @@ exports.login = async (req, res) => {
     } catch (error) {
         if (error.message === 'User not found') {
             return res.status(404).json({ message: error.message });
-        } 
+        }
         else if (error.message === 'Invalid username or password') {
             return res.status(401).json({ message: error.message });
         }
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
-};  
+};
 
 exports.logout = (req, res) => {
     res.clearCookie('token');

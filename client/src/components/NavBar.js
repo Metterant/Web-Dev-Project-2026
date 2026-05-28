@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUser } from '../context/UserContext';
 
 const navItems = [
-  { label: "Dashboard", href: "/" },
   // { label: "Students", href: "/students" },
   { label: "Instructors", href: "/instructors" },
   { label: "Courses", href: "/courses" },
@@ -31,6 +30,7 @@ function NavBar() {
     : null;
 
   const visibleNavItems = [
+    { label: "Dashboard", href: "/" },
     ...(studentsHref ? [{ label: "Students", href: studentsHref }] : []),
     ...navItems,
     ...(myCoursesHref ? [{ label: "My Courses", href: myCoursesHref }] : []),

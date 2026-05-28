@@ -53,6 +53,20 @@ export default function DepartmentEdit() {
     e.preventDefault();
     setSaving(true);
     setError('');
+    // Client-side validation
+    const validateForm = (data) => {
+      if (!data.department_name || String(data.department_name).trim().length === 0) return 'Department name is required.';
+      if (data.department_name.length > 100) return 'Department name must be 100 characters or fewer.';
+      if (data.head_instructor_id !== '' && (!Number.isInteger(Number(data.head_instructor_id)) || Number(data.head_instructor_id) < 1)) return 'Head Instructor ID must be a positive integer.';
+      return null;
+    };
+
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      setSaving(false);
+      return;
+    }
 
     try {
       const resp = await apiFetch(`/api/departments/${id}`, {

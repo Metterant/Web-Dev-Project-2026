@@ -4,6 +4,12 @@ import CoursesButton from '../../components/CoursesButton'
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { apiFetch } from '../../services/apiClient';
+import {
+  isValidMySQLDate,
+  isValidEmail,
+  isValidName,
+  isValidStudentCode,
+} from '../../utils/validationUtils';
 
 const initialFormData = {
   student_code: '',
@@ -75,6 +81,25 @@ export default function StudentEdit() {
     event.preventDefault();
     setSaving(true);
     setError('');
+
+    // Client-side validation mirroring server rules
+    const validateForm = (data) => {
+      if (!isValidStudentCode(data.student_code)) return 'Student code must start with "S" and include at least 3 digits.';
+      if (!isValidName(data.first_name)) return 'First name must contain only letters.';
+      if (!isValidName(data.last_name)) return 'Last name must contain only letters.';
+      if (!isValidMySQLDate(data.dob)) return 'Date of birth must be a valid YYYY-MM-DD date.';
+      if (!isValidEmail(data.email)) return 'Email address is invalid.';
+      const year = Number(data.admission_year);
+      if (!Number.isInteger(year) || year < 1900 || year > 2100) return 'Admission year must be an integer between 1900 and 2100.';
+      return null;
+    };
+
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      setSaving(false);
+      return;
+    }
 
     try {
       const response = await apiFetch(`/api/students/${id}`, {

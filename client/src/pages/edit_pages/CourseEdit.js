@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import './EditPage.css';
 import { apiFetch } from '../../services/apiClient';
+import { isValidCourseCode } from '../../utils/validationUtils';
 
 const initialFormData = {
   course_code: '',
@@ -59,6 +60,22 @@ export default function CourseEdit() {
     e.preventDefault();
     setSaving(true);
     setError('');
+    // Client-side validation
+    const validateForm = (data) => {
+      if (!isValidCourseCode(data.course_code)) return 'Course code is invalid (expect letters then numbers).';
+      if (!data.course_name || String(data.course_name).trim().length === 0) return 'Course name is required.';
+      const credits = Number(data.credits);
+      if (!Number.isInteger(credits) || credits < 0 || credits > 10) return 'Credits must be an integer between 0 and 10.';
+      if (data.department_id !== '' && !Number.isInteger(Number(data.department_id))) return 'Department ID must be an integer.';
+      return null;
+    };
+
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      setSaving(false);
+      return;
+    }
 
     try {
       const resp = await apiFetch(`/api/courses/${id}`, {
