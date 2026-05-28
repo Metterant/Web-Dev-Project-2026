@@ -31,7 +31,7 @@ function NavBar() {
     : null;
 
   const visibleNavItems = [
-    ...(studentsHref ? [{ label: "Students", href: myCoursesHref }] : []),
+    ...(studentsHref ? [{ label: "Students", href: studentsHref }] : []),
     ...navItems,
     ...(myCoursesHref ? [{ label: "My Courses", href: myCoursesHref }] : []),
     ...(myScheduleHref ? [{ label: "My Schedule", href: myScheduleHref }] : []),
